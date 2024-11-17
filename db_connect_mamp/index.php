@@ -15,9 +15,17 @@ if(mysqli_num_rows($result) == 0){
     $layout .="<div class='card' style='width: 18rem;'>
     <div class='card-body'>
       <h5 class='card-title'>{$value['sport']}</h5>
-      <h6 class='card-subtitle mb-2 text-body-secondary'>Card subtitle</h6>
+      <h6 class='card-subtitle mb-2 text-body-secondary'>{$value['seasonGame']}</h6>
+
+      <h7 class='card-title'>Departure from: {$value['status']}</h7><br>
+      <h8 class='card-title'>Departure from: {$value['timeVenueUTC']}</h8><br>
+      <h9 class='card-title'>Departure from: {$value['dateVenue']}</h9><br>
+      <h9 class='card-title'>Departure from: {$value['homeTeam']}</h9><br>
+      <h9 class='card-title'>Departure from: {$value['awayTeam']}</h9><br>
+
+
       <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href='#' class='card-link'>Card link</a>
+      <a href='details.php?id={$value['id']}' class='btn btn-primary'>Details</a>
       <a href='#' class='card-link'>Another link</a>
     </div>
   </div>";
