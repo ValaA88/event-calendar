@@ -8,13 +8,19 @@ $sql = "SELECT * FROM `events`
 JOIN stage ON stage.id = events.fk_stage_id
 JOIN team_event_result ON team_event_result.fk_event_id = events.id
 JOIN team ON team.id = team_event_result.fk_team_id
-JOIN event_result ON event_result.id = team_event_result.fk_event_result_id";
+JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
+WHERE events.id = {$id}";
 
 $result = mysqli_query($conn, $sql);
 
 $row = mysqli_fetch_assoc($result);
 
-$layout = "<div class='card' style='width: 18rem;'>
+$layout = "";
+
+if(empty($row)){
+ $layout.= "No results";
+}else {
+  $layout = "<div class='card' style='width: 18rem;'>
 <div class='card-body'>
   <h5 class='card-title'>{$row['sport']}</h5>
   <h6 class='card-subtitle mb-2 text-body-secondary'>{$row['seasonGame']}</h6>
@@ -31,11 +37,13 @@ $layout = "<div class='card' style='width: 18rem;'>
   <h9 class='card-title'>Ordering: {$row['ordering']}</h9><br>
 
 
-  <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
   <a href='index.php' class='btn btn-primary'>Back</a>
-  <a href='#' class='card-link'>Another link</a>
+
 </div>
-</div>"
+</div>";
+
+
+}
 
 ?>
 

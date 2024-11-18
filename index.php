@@ -22,11 +22,8 @@ if(mysqli_num_rows($result) == 0){
       <h9 class='card-title'>Date: {$value['dateVenue']}</h9><br>
       <h9 class='card-title'>Home Team: {$value['homeTeam']}</h9><br>
       <h9 class='card-title'>Away Team: {$value['awayTeam']}</h9><br>
-
-
-      <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       <a href='details.php?id={$value['id']}' class='btn btn-primary'>Details</a>
-      <a href='#' class='card-link'>Another link</a>
+
     </div>
   </div>";
   }
