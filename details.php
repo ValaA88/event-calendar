@@ -3,17 +3,19 @@
 require_once('./db_connect_mamp.php');
 
 $id = $_GET['id'];
+$teamID = $_GET['0'];
 
-$sql = "SELECT * FROM `events`
-JOIN stage ON stage.id = events.fk_stage_id
-JOIN team_event_result ON team_event_result.fk_event_id = events.id
-JOIN team ON team.id = team_event_result.fk_team_id
-JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
-WHERE events.id = {$id}";
+$sql = "SELECT events.*, event_result.*,team.*, team_event_result.fk_event_id, team_event_result.fk_team_id, team_event_result.fk_event_result_id as attending FROM team_event_result
+JOIN events ON events.id = team_event_result.fk_event_id JOIN event_result ON event_result.id = team_event_result.fk_event_result_id RIGHT JOIN team ON team.id = team_event_result.fk_team_id WHERE events.id = {$id} AND team.id = {$teamID}";
 
 $result = mysqli_query($conn, $sql);
 
 $row = mysqli_fetch_assoc($result);
+
+// $sqlTeam = "SELECT * FROM team";
+// $resultTeam = mysqli_query($conn, $sqlTeam);
+
+// $rowTeam = mysqli_fetch_assoc($resultTeam);
 
 $layout = "";
 
@@ -28,9 +30,11 @@ if(empty($row)){
   <h7 class='card-title'>Status: {$row['status']}</h7><br>
   <h8 class='card-title'>Time: {$row['timeVenueUTC']} UTC</h8><br>
   <h9 class='card-title'>Date: {$row['dateVenue']}</h9><br>
-  <h9 class='card-title'>Home Team: {$row['homeTeam']}</h9><br>
-  <h9 class='card-title'>Away Team: {$row['awayTeam']}</h9><br>
-  <h9 class='card-title'>Result: {$row['result']}</h9><br>
+  <div>
+  <p>Result:</p>
+  <h9 class='card-title'>{$row['name']} : {$row['homeTeamResult']}</h9><br>
+  <h9 class='card-title'>{$row['name']} : {$row['awayTeamResult']}</h9><br>
+  </div>
   <h9 class='card-title'>Group: {$row['groupSeason']}</h9><br>
   <h9 class='card-title'>Origin Competition Name: {$row['originCompetitionName']}</h9><br>
   <h9 class='card-title'>Stage: {$row['name']}</h9><br>

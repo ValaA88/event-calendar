@@ -1,35 +1,76 @@
 <?php
-
 require_once("./db_connect_mamp.php");
 
-$sql = "SELECT * FROM `events` ";
-$result = mysqli_query($conn,$sql);
+$sql = "
+SELECT
+    events.id AS event_id,
+    events.sport,
+    events.seasonGame,
+    events.status,
+    events.timeVenueUTC,
+    events.dateVenue,
+    stage.stageName,
+    team.name AS team_name
+FROM events
+LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
+LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
+LEFT JOIN team ON team.id = team_event_result.fk_team_id
+ORDER BY events.id, team_event_result.id
+";
+
+$result = mysqli_query($conn, $sql);
 
 $layout = "";
 
-if(mysqli_num_rows($result) == 0){
-  $layout = "No Result";
+if (mysqli_num_rows($result) == 0) {
+    $layout = "No Result";
 } else {
-  $rows = mysqli_fetch_all($result,MYSQLI_ASSOC);
-  foreach($rows as $value){
-    $layout .="<div class='card' style='width: 18rem;'>
-    <div class='card-body'>
-      <h5 class='card-title'>{$value['sport']}</h5>
-      <h6 class='card-subtitle mb-2 text-body-secondary'>{$value['seasonGame']}</h6>
+    $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-      <h7 class='card-title'>Status: {$value['status']}</h7><br>
-      <h8 class='card-title'>Time: {$value['timeVenueUTC']} UTC</h8><br>
-      <h9 class='card-title'>Date: {$value['dateVenue']}</h9><br>
-      <h9 class='card-title'>Home Team: {$value['homeTeam']}</h9><br>
-      <h9 class='card-title'>Away Team: {$value['awayTeam']}</h9><br>
-      <a href='details.php?id={$value['id']}' class='btn btn-primary'>Details</a>
+    $events = [];
+    foreach ($rows as $row) {
+        $eventId = $row['event_id'];
+        if (!isset($events[$eventId])) {
+            $events[$eventId] = [
+                'details' => [
+                    'sport' => $row['sport'],
+                    'seasonGame' => $row['seasonGame'],
+                    'status' => $row['status'],
+                    'timeVenueUTC' => $row['timeVenueUTC'],
+                    'dateVenue' => $row['dateVenue'],
+                    'stageName' => $row['stageName']
+                ],
+                'teams' => []
+            ];
+        }
+        if (!empty($row['team_name'])) {
+            $events[$eventId]['teams'][] = $row['team_name'];
+        }
+    }
 
-    </div>
-  </div>";
-  }
+    foreach ($events as $eventId => $eventData) {
+        $layout .= "<div class='card' style='width: 18rem;'>
+        <div class='card-body'>
+            <h5 class='card-title'>{$eventData['details']['sport']}</h5>
+            <h6 class='card-subtitle mb-2 text-body-secondary'>{$eventData['details']['seasonGame']}</h6>
+            <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
+            <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
+            <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
+            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
+
+        $count = 1;
+        foreach ($eventData['teams'] as $team) {
+            $layout .= "<h9 class='card-title'>Team {$count}: {$team}</h9><br>";
+            $count++;
+        }
+
+        $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+        </div>
+        </div>";
+    }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +99,7 @@ if(mysqli_num_rows($result) == 0){
   <form enctype="multipart/form-data">
     <a href="create.php" class="btn btn-primary" style="margin: 20px; text-align: center;">Create an Event</a>
     <?= $layout ?>
+
   </form>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
