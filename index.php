@@ -1,7 +1,6 @@
 <?php
 require_once("./db_connect_mamp.php");
 
-
 // Optimized SQL query to fetch all necessary data in one go
 $sql = "
 SELECT
@@ -12,11 +11,13 @@ SELECT
     events.timeVenueUTC,
     events.dateVenue,
     stage.stageName,
-    team.name AS team_name
+    team.name AS team_name,
+    event_result.teamResult AS team_result
 FROM events
 LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
 LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
 LEFT JOIN team ON team.id = team_event_result.fk_team_id
+LEFT JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
 ORDER BY events.id, team_event_result.id
 ";
 
@@ -43,15 +44,17 @@ if (mysqli_num_rows($result) == 0) {
                     'dateVenue' => $row['dateVenue'],
                     'stageName' => $row['stageName']
                 ],
-                'teams' => []
+                'teams' => [],
+                'result' => []
             ];
         }
-        if (!empty($row['team_name'])) {
+        if (!empty($row['team_name']) || !empty($row['team_result'])) {
             $events[$eventId]['teams'][] = $row['team_name'];
+            $events[$eventId]['result'][] = $row['team_result'];
         }
     }
 
-     // Build layout
+    // Build layout
     foreach ($events as $eventId => $eventData) {
         $layout .= "<div class='card' style='width: 18rem;'>
         <div class='card-body'>
@@ -62,11 +65,14 @@ if (mysqli_num_rows($result) == 0) {
             <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
             <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
 
-        $count = 1;
-        foreach ($eventData['teams'] as $team) {
-            $layout .= "<h9 class='card-title'>Team {$count}: {$team}</h9><br>";
-            $count++;
-        }
+            // Use "No result" as a fallback if no result exists
+            $count = 1;
+            foreach ($eventData['teams'] as $index => $team) {
+                $teamResult = $eventData['result'][$index] ?? '';
+                $layout .= "<h9 class='card-title'>Team {$count}: {$team} - {$teamResult}</h9><br>";
+                $count++;
+            }
+
 
         $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
         </div>
@@ -74,6 +80,7 @@ if (mysqli_num_rows($result) == 0) {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
