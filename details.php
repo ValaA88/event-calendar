@@ -91,7 +91,9 @@ if (mysqli_num_rows($result) == 0) {
 
     $i = 0;
     foreach ($events as $eventId => $eventData) {
-        $layout .= "<div class='card' style='width: 18rem;'>
+        $layout .= "
+        <div class='container' style='padding:50px;'>
+        <div class='card' style='width: 18rem; background-color: #41729f ;color:white'>
         <div class='card-body'>
             <h5 class='card-title'>{$eventData['details']['sport']}</h5>
             <h6 class='card-subtitle mb-2 text-body-secondary'>{$eventData['details']['seasonGame']}</h6>
@@ -128,6 +130,7 @@ if (mysqli_num_rows($result) == 0) {
 
         $layout .= "<a href='index.php' class='btn btn-primary'>Back</a>
         </div>
+        </div>
         </div>";
         $i++;
     }
@@ -147,8 +150,25 @@ if (mysqli_num_rows($result) == 0) {
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
-  <?= $layout ?>
+<body style="background-color: #274472">
+  <nav class="navbar bg-body-tertiary">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="images/logo.jpg" alt="..." width="50" height="50">
+      </a>
+      <a class="navbar-brand" href="create.php">Login</a>
+      <a class="navbar-brand" href="create.php">Create an Event</a>
+
+      <a class="navbar-brand" href="#">About us</a>
+      <a class="navbar-brand" href="#">FAQ</a>
+
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row row-cols-3">
+      <?= $layout ?>
+    </div>
+  </div>
 </body>
 
 </html>

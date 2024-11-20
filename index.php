@@ -53,10 +53,12 @@ if (mysqli_num_rows($result) == 0) {
     }
 
     foreach ($events as $eventId => $eventData) {
-        $layout .= "<div class='card' style='width: 18rem;'>
+        $layout .= "
+        <div style='padding: 30px; '>
+        <div class='card' style='width: 18rem ; background-color: #41729f ;color:white' >
         <div class='card-body'>
             <h5 class='card-title'>{$eventData['details']['sport']}</h5>
-            <h6 class='card-subtitle mb-2 text-body-secondary'>{$eventData['details']['seasonGame']}</h6>
+            <h6 class='card-subtitle'>{$eventData['details']['seasonGame']}</h6>
             <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
             <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
             <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
@@ -65,12 +67,13 @@ if (mysqli_num_rows($result) == 0) {
             $count = 1;
             foreach ($eventData['teams'] as $index => $team) {
                 $teamResult = $eventData['result'][$index] ?? '';
-                $layout .= "<h9 class='card-title'>Team {$count}: {$team} - {$teamResult}</h9><br>";
+                $layout .= "<h9 class='card-title' style='color:#7ec8e3'>Team {$count}: {$team} - {$teamResult}</h9><br>";
                 $count++;
             }
 
 
         $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+        </div>
         </div>
         </div>";
     }
@@ -90,22 +93,26 @@ if (mysqli_num_rows($result) == 0) {
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
+<body style="background-color: #274472">
   <nav class="navbar bg-body-tertiary">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img src="images/logo.jpg" alt="..." width="30" height="24">
+        <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
-
-      <a class="navbar-brand" href="create.php">Create an Event</a>
+      <a class="navbar-brand" href="create.php">Login</a>
+      <a class="btn btn-success" href="create.php">Create an Event</a>
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>
 
     </div>
   </nav>
   <form enctype="multipart/form-data">
-    <a href="create.php" class="btn btn-primary" style="margin: 20px; text-align: center;">Create an Event</a>
-    <?= $layout ?>
+
+    <div class="container">
+      <div class="row row-cols-3 .">
+        <?= $layout ?>
+      </div>
+    </div>
 
   </form>
 
