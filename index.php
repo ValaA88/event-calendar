@@ -1,7 +1,6 @@
 <?php
 require_once("./db_connect_mamp.php");
 
-// Optimized SQL query to fetch all necessary data in one go
 $sql = "
 SELECT
     events.id AS event_id,
@@ -30,7 +29,6 @@ if (mysqli_num_rows($result) == 0) {
 } else {
     $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    // Group data by event
     $events = [];
     foreach ($rows as $row) {
         $eventId = $row['event_id'];
@@ -54,7 +52,6 @@ if (mysqli_num_rows($result) == 0) {
         }
     }
 
-    // Build layout
     foreach ($events as $eventId => $eventData) {
         $layout .= "<div class='card' style='width: 18rem;'>
         <div class='card-body'>
@@ -65,7 +62,6 @@ if (mysqli_num_rows($result) == 0) {
             <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
             <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
 
-            // Use "No result" as a fallback if no result exists
             $count = 1;
             foreach ($eventData['teams'] as $index => $team) {
                 $teamResult = $eventData['result'][$index] ?? '';
