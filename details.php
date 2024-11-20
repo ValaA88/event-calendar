@@ -36,10 +36,9 @@ $result = mysqli_query($conn, $sql);
 
 $layout = "";
 
-if (mysqli_num_rows($result) == 0){
-  $layout = "No Result";
+if (mysqli_num_rows($result) == 0) {
+    $layout = "No Result";
 } else {
-
     $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     $events = [];
@@ -77,12 +76,21 @@ if (mysqli_num_rows($result) == 0){
                 ]
             ];
         }
-      }
+
         if ($count == 1 && (!empty($row['name']) || !empty($row['teamResult']) || !empty($row['teamCountryCode']))) {
             $events[$eventId]['teams']["name"][] = $row['name'];
             $events[$eventId]['result']["teamResult"][] = $row['teamResult'];
+            # $events[$eventId]['result'][] = $row['teamResult'];
             $events[$eventId]['teams']['teamCountryCode'][] = $row['teamCountryCode'];
 
+        } elseif($count == 1 && (!empty($row['name']) || empty($row['teamResult']) || !empty($row['teamCountryCode']))) {
+          $events[$eventId]['teams']["name"][] = $row['name'];
+          $events[$eventId]['result']["teamResult"][] = $row['teamResult'];
+          # $events[$eventId]['result'][] = $row['teamResult'];
+          $events[$eventId]['teams']['teamCountryCode'][] = $row['teamCountryCode'];
+
+        };
+        $count++;
 
     }
 
