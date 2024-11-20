@@ -41,6 +41,7 @@ if (mysqli_num_rows($result) == 0) {
 } else {
     $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+
     $events = [];
     $count = 0;
     foreach ($rows as $row) {
@@ -83,15 +84,9 @@ if (mysqli_num_rows($result) == 0) {
             # $events[$eventId]['result'][] = $row['teamResult'];
             $events[$eventId]['teams']['teamCountryCode'][] = $row['teamCountryCode'];
 
-        } elseif($count == 1 && (!empty($row['name']) || empty($row['teamResult']) || !empty($row['teamCountryCode']))) {
-          $events[$eventId]['teams']["name"][] = $row['name'];
-          $events[$eventId]['result']["teamResult"][] = $row['teamResult'];
-          # $events[$eventId]['result'][] = $row['teamResult'];
-          $events[$eventId]['teams']['teamCountryCode'][] = $row['teamCountryCode'];
 
-        };
+        }
         $count++;
-
     }
 
     $i = 0;
@@ -121,11 +116,11 @@ if (mysqli_num_rows($result) == 0) {
           $count = 1;
           $i = 0;
             foreach ($eventData['teams'] as $index => $team) {
-                $teamResult = $eventData['result']['teamResult'][$i] ;
-                $teamCountryCode = $eventData['teams']['teamCountryCode'][$i] ;
+                $teamResult = $eventData['result']['teamResult'][$i];
+                $teamCountryCode = $eventData['teams']['teamCountryCode'][$i];
                 $team = $eventData['teams']['name'][$i];
                 $layout .= "<h9 class='card-title'>Team {$count}: {$team} - {$teamResult} - {$teamCountryCode}</h9><br>
-                <h9 class='card-title'>Team Country Code: {$eventData['teams']['teamCountryCode'][$index]}</h9><br>
+                <h9 class='card-title'>Team Country Code: {$eventData['teams']['teamCountryCode'][$i]}</h9><br>
                 ";
                 $count++;
                 $i++;
