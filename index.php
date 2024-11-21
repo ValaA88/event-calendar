@@ -55,7 +55,7 @@ if (mysqli_num_rows($result) == 0) {
     foreach ($events as $eventId => $eventData) {
         $layout .= "
         <div style='padding: 30px; '>
-        <div class='card' style='width: 18rem ; background-color: #41729f ;color:white' >
+        <div class='card' style='width: 18rem ; background-color: #white ;color:black' >
         <div class='card-body'>
             <h5 class='card-title'>{$eventData['details']['sport']}</h5>
             <h6 class='card-subtitle'>{$eventData['details']['seasonGame']}</h6>
@@ -67,7 +67,7 @@ if (mysqli_num_rows($result) == 0) {
             $count = 1;
             foreach ($eventData['teams'] as $index => $team) {
                 $teamResult = $eventData['result'][$index] ?? '';
-                $layout .= "<h9 class='card-title' style='color:#7ec8e3'>Team {$count}: {$team} - {$teamResult}</h9><br>";
+                $layout .= "<h9 class='card-title' style='color:#black'>Team {$count}: {$team} - {$teamResult}</h9><br>";
                 $count++;
             }
 
@@ -93,7 +93,7 @@ if (mysqli_num_rows($result) == 0) {
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body style="background-color: #274472">
+<body style="background-color: #cadedf">
   <nav class="navbar bg-body-tertiary">
     <div class="container">
       <a class="navbar-brand" href="#">

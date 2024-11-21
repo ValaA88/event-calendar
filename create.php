@@ -12,46 +12,77 @@ if(isset($_POST['create'])){
   $stadium = cleanInputs($_POST['stadium']);
   $groupSeason = cleanInputs($_POST['groupSeason']);
   $originCompetitionName = cleanInputs($_POST['originCompetitionName']);
-  $teamCountryCode =$_POST['teamCountryCode'];
 
     $team1 = cleanInputs($_POST['team1']);
     $team2 = cleanInputs($_POST['team2']);
-    $team1Result = cleanInputs($_POST['team1Result']) ?? null;
-    $team2Result = cleanInputs($_POST['team2Result']) ?? null;
-    $goals = ($_POST['goals']) ?? null;
-    $yellowCards = ($_POST['yellowCards']) ?? null;
-    $redCards = ($_POST['redCards']) ?? null;
+    $team1CountryCode =$_POST['team1CountryCode'];
+    $team2CountryCode =$_POST['team2CountryCode'];
+  // ## we take that out
+  //   $winner = ($_POST['winner']) ?? null;
+  //   $goals = ($_POST['goals']) ?? null;
+  //   $yellowCards = ($_POST['yellowCards']) ?? null;
+  //   $redCards = ($_POST['redCards']) ?? null;
 
   $stageName = cleanInputs($_POST['stageName']);
   $stagePosition = cleanInputs($_POST['stagePosition']);
   $ordering = $_POST['ordering'];
 
+
   // insert for event table
   $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}')";
-
   $resultEvent = mysqli_query($conn, $sqlEvent);
+  $fkEventId = $conn->insert_id;
+
 
   // insert for stage table
   $sqlStage ="INSERT INTO `stage`(`stageName`,`ordering`) VALUES ('{$stageName}','{$ordering}')";
   $resultStage = mysqli_query($conn, $sqlStage);
+  $fkStageId = $conn->insert_id;
+
+  // insert for event_result table
+  $sqlEventResult = "INSERT INTO `event_result`(`teamResult`, `winner`, `goals`, `yellowCards`, `redCards`) VALUES (null, null, null, null, null)";
+
+  $resultEventResult = mysqli_query($conn, $sqlEventResult);
+  $fkEventResultId = $conn->insert_id;
+
 
   // teams and results
   $teams = [
-    ['name' => $team1, 'result' => $team1Result],
-    ['name' => $team2, 'result' => $team2Result]
+    ['name' => $team1, 'teamCountryCode' => $team1CountryCode],
+    ['name' => $team2, 'teamCountryCode' => $team2CountryCode]
+
   ];
+
+
 
   foreach($teams as $team){
     // insert for team table
-    $sqlTeam = "INSERT INTO `team`(`name`,`teamCountryCode`, `stagePosition`) VALUES ('{$team1}','{$teamCountryCode}','{$stagePosition}')";
+    $sqlTeam = "INSERT INTO `team`(`name`,`teamCountryCode`,`stagePosition`) VALUES ('{$team['name']}','{$team['teamCountryCode']}','{$stagePosition}')";
     $resultTeam = mysqli_query($conn,$sqlTeam);
+    $fkTeamId = $conn->insert_id;
+
 
     //insert for team_event_result table
-    $sqlTeamEventResult = "INSERT INTO `team_event_result`(`fk_team_id`, `fk_event_id`, `fk_event_result_id`, `fk_stage_id`) VALUES ('{$fk_team_id}','{$fk_event_id}','{$fk_event_result_id}','{$fk_stage_id}')";
+    $sqlTeamEventResult = "INSERT INTO `team_event_result`(`fk_team_id`, `fk_event_id`, `fk_event_result_id`, `fk_stage_id`) VALUES ('{$fkTeamId}','{$fkEventId}','{$fkEventResultId}','{$fkStageId}')";
     $resultTeamEventResult = mysqli_query($conn, $sqlTeamEventResult);
   }
 
-  echo "Event created successfully!";
+  if ($resultEvent) {
+    echo "<div class='alert alert-success' role='alert'>
+    <h4 class='alert-heading'>Well done! </h4>
+    <p>Your Product has been Created successfully!</p>
+    <hr>
+    <p class='mb-0'> now you can find it on the main page.</p>
+  </div>";
+    header("refresh: 3; url=index.php");
+  } else {
+    echo "<div class='alert alert-danger' role='alert'>
+  <h4 class='alert-heading'>something went wrong</h4>
+  <p>Your Product did not create!</p>
+  <hr>
+  <p class='mb-0'>Please try again.</p>
+</div>";
+  }
 }
 
 
@@ -125,8 +156,8 @@ if(isset($_POST['create'])){
         <input type="text" class="form-control" id="team1" name="team1" required>
       </div>
       <div class="mb-3">
-        <label for="team1Result" class="form-label">Team 1 Result</label>
-        <input type="text" class="form-control" id="team1Result" name="team1Result">
+        <label for="team1CountryCode" class="form-label">Team 1 Country Code</label>
+        <input type="text" class="form-control" id="team1CountryCode" name="team1CountryCode" required>
       </div>
 
       <div class="mb-3">
@@ -134,22 +165,8 @@ if(isset($_POST['create'])){
         <input type="text" class="form-control" id="team2" name="team2" required>
       </div>
       <div class="mb-3">
-        <label for="team2Result" class="form-label">Team 2 Result</label>
-        <input type="text" class="form-control" id="team2Result" name="team2Result">
-      </div>
-
-      <h3>Event Totals</h3>
-      <div class="mb-3">
-        <label for="totalGoals" class="form-label">Total Goals</label>
-        <input type="number" class="form-control" id="totalGoals" name="totalGoals">
-      </div>
-      <div class="mb-3">
-        <label for="totalYellowCards" class="form-label">Total Yellow Cards</label>
-        <input type="number" class="form-control" id="totalYellowCards" name="totalYellowCards">
-      </div>
-      <div class="mb-3">
-        <label for="totalRedCards" class="form-label">Total Red Cards</label>
-        <input type="number" class="form-control" id="totalRedCards" name="totalRedCards">
+        <label for="team2CountryCode" class="form-label">Team 2 Country Code</label>
+        <input type="text" class="form-control" id="team2CountryCode" name="team2CountryCode" required>
       </div>
 
       <h3>Stage</h3>
@@ -162,8 +179,8 @@ if(isset($_POST['create'])){
         <input type="number" class="form-control" id="stagePosition" name="stagePosition">
       </div>
       <div class="mb-3">
-        <label for="stageOrdering" class="form-label">Stage Ordering</label>
-        <input type="number" class="form-control" id="stageOrdering" name="stageOrdering">
+        <label for="ordering" class="form-label">Stage Ordering</label>
+        <input type="text" class="form-control" id="ordering" name="ordering">
       </div>
 
       <button type="submit" class="btn btn-success" name="create">Create Event</button>
