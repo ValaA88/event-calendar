@@ -1,6 +1,10 @@
 <?php
 require_once("./db_connect_mamp.php");
 
+$sportFilter = isset($_GET['sport']) ? mysqli_real_escape_string($conn, $_GET['sport']) : '';
+$dateFilter = isset($_GET['date']) ? mysqli_real_escape_string($conn, $_GET['date']) : '';
+
+
 $sql = "
 SELECT
     events.id AS event_id,
@@ -17,8 +21,20 @@ LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
 LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
 LEFT JOIN team ON team.id = team_event_result.fk_team_id
 LEFT JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
-ORDER BY events.id, team_event_result.id
 ";
+
+$filterInput = [];
+if (!empty($sportFilter)) {
+    $filterInput[] = "events.sport = '$sportFilter'";
+}
+if (!empty($dateFilter)) {
+    $filterInput[] = "DATE(events.dateVenue) = '$dateFilter'";
+}
+if (!empty($filterInput)) {
+    $sql .= " WHERE " . implode(" AND ", $filterInput);
+}
+
+$sql .= " ORDER BY events.id, team_event_result.id";
 
 $result = mysqli_query($conn, $sql);
 
@@ -106,6 +122,26 @@ if (mysqli_num_rows($result) == 0) {
 
     </div>
   </nav>
+
+  <div class="container my-4">
+    <h5>Filter Events</h5>
+    <form method="GET" action="index.php">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="sport" class="form-label">Sport</label>
+          <input type="text" class="form-control" id="sport" name="sport" placeholder="Enter sport">
+        </div>
+        <div class="col-md-4">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" class="form-control" id="date" name="date">
+        </div>
+        <div class="col-md-4 align-self-end">
+          <button type="submit" class="btn btn-primary">Apply Filter</button>
+          <a href="index.php" class="btn btn-secondary">Clear</a>
+        </div>
+      </div>
+    </form>
+  </div>
   <form enctype="multipart/form-data">
 
     <div class="container">
