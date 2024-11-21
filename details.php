@@ -93,7 +93,7 @@ if (mysqli_num_rows($result) == 0) {
     foreach ($events as $eventId => $eventData) {
         $layout .= "
         <div class='container' style='padding:50px;'>
-        <div class='card' style='width: 18rem; background-color: #white ;color:black'>
+        <div class='card' style='width: 18rem; background-color: #cadedf ;color:black'>
         <div class='card-body'>
             <h5 class='card-title'>{$eventData['details']['sport']}</h5>
             <h6 class='card-subtitle mb-2 text-body-secondary'>{$eventData['details']['seasonGame']}</h6>

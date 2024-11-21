@@ -1,6 +1,6 @@
 <?php
 
-// __________ THIS PAGE IS NOT FUNCTIONAL AND DID NOT USED IN THE APP____________
+// __________ TOUTDATED FILTER, DO NOT USE____________
 
 
 if (isset($_GET['filter'])) {
