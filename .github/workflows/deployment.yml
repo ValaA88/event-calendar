@@ -19,8 +19,9 @@ jobs:
         id: bump
         uses: anothrNick/github-tag-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: patch # Can be major, minor, or patch
+          initial_version: 0.1.0 # Set an initial version if no tags exist
 
       - name: Create GitHub release
         uses: actions/create-release@v1
