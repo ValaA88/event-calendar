@@ -160,7 +160,7 @@ if(isset($_POST['register'])){
     </div>
     <div style="padding-top: 18px">
       <button type="submit" name="register" class="btn btn-primary">Submit</button>
-      <a href="index.php" class="btn btn-outline-info">Back to main page</a>
+      <a href="index.php" class="btn btn-outline-primary">Back to main page</a>
     </div>
   </form>
 </body>
