@@ -157,7 +157,7 @@ if (mysqli_num_rows($result) == 0) {
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
       <a class="navbar-brand" href="create.php">Login</a>
-      <a class="btn btn-success" href="create.php">Create an Event</a>
+      <a class="btn btn-success" href="login.php">Create an Event</a>
 
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>
