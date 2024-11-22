@@ -153,7 +153,7 @@ if (mysqli_num_rows($result) == 0) {
 <body style="background-color: #274472">
   <nav class="navbar bg-body-tertiary">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
       <a class="navbar-brand" href="create.php">Login</a>

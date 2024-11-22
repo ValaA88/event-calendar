@@ -1,6 +1,6 @@
 <?php
 
-// __________ TOUTDATED FILTER, DO NOT USE____________
+// __________ OUTDATED FILTER, DO NOT USE____________
 
 
 if (isset($_GET['filter'])) {
