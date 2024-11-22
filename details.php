@@ -1,4 +1,21 @@
 <?php
+ session_start();
+
+if(!isset($_SESSION["admin"]) && !isset($_SESSION["user"])){
+  $session = 0;
+  $goBack = "index.php";
+}
+
+if(isset($_SESSION["admin"])){
+  $session = $_SESSION["admin"];
+  $goBack = "dashboard.php";
+}
+
+if(isset($_SESSION["user"])){
+  $session = $_SESSION["user"];
+  $goBack = "home.php";
+}
+
 
 require_once("./db_connect_mamp.php");
 
@@ -64,6 +81,8 @@ if (mysqli_num_rows($result) == 0) {
                     'redCards' => $row['redCards'],
                     'winner' => $row['winner'],
                     'stagePosition' => $row['stagePosition'],
+                    'ordering' => $row['ordering'],
+
 
                 ],
                 'teams' => [
@@ -105,7 +124,10 @@ if (mysqli_num_rows($result) == 0) {
             <h9 class='card-title'>group: {$eventData['details']['groupSeason']}</h9><br>
             <h9 class='card-title'>Competition Name: {$eventData['details']['originCompetitionName']}</h9><br>
 
-            <h9 class='card-title'>Stage Position: {$eventData['details']['stagePosition']}</h9><br>
+            <h9 class='card-title'>Stage Position: {$eventData['details']['stagePosition']}</h9>
+            <br>
+            <h9 class='card-title'>Stage Ordering: {$eventData['details']['ordering']}</h9>
+            <br>
 
             <h9 class='card-title'>Winner: {$eventData['details']['winner']}</h9><br>
             <h9 class='card-title'>Goals: {$eventData['details']['goals']}</h9><br>
@@ -128,7 +150,7 @@ if (mysqli_num_rows($result) == 0) {
                 $i++;
             }
 
-        $layout .= "<a href='index.php' class='btn btn-primary'>Back</a>
+        $layout .= "<a href='{$goBack}' class='btn btn-primary'>Back</a>
         </div>
         </div>
         </div>";
@@ -156,7 +178,7 @@ if (mysqli_num_rows($result) == 0) {
       <a class="navbar-brand" href="/">
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
-      <a class="navbar-brand" href="create.php">Login</a>
+      <a class="navbar-brand" href="login.php">Login</a>
       <a class="btn btn-success" href="login.php">Create an Event</a>
 
       <a class="navbar-brand" href="#">About us</a>

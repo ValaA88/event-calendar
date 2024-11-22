@@ -105,7 +105,8 @@ if($error){
   <h1><?= $loginError ?></h1>
   <form class="container" method="post">
 
-
+    <h4>To create an Event you need to Login</h4>
+    <h6>If you don not have an account please Register first</h6>
     <div class="form-group">
       <label for="email">Email address</label>
       <input type="email" class="form-control" aria-describedby="emailHelp" name="email" value="<?= $email?>">

@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once("./db_connect_mamp.php");
 
 $sportFilter = isset($_GET['sport']) ? mysqli_real_escape_string($conn, $_GET['sport']) : '';
@@ -118,7 +121,7 @@ if (mysqli_num_rows($result) == 0) {
         <a class="navbar-brand" href="index.php">Home</a>
 
       </a>
-      <a class="navbar-brand" href="create.php">Login</a>
+      <a class="navbar-brand" href="login.php">Login</a>
       <a class="btn btn-success" href="login.php">Create an Event</a>
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>

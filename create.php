@@ -74,7 +74,7 @@ if(isset($_POST['create'])){
     <hr>
     <p class='mb-0'> now you can find it on the main page.</p>
   </div>";
-    header("refresh: 3; url=index.php");
+    header("refresh: 3; url=home.php");
   } else {
     echo "<div class='alert alert-danger' role='alert'>
   <h4 class='alert-heading'>something went wrong</h4>
