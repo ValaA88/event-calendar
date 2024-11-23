@@ -8,13 +8,13 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])){
   header("location: login.php");
 }
 
-if(isset($_SESSION['admin'])){
-  header("location: dashboard.php");
+if(isset($_SESSION['user'])){
+  header("location: home.php");
 }
 
 $layout = "";
 
-$sqlUser = "SELECT * FROM `users` WHERE id = {$_SESSION['user']}";
+$sqlUser = "SELECT * FROM `users` WHERE id = {$_SESSION['admin']}";
 $resultUser = mysqli_query($conn, $sqlUser);
 $countUser = mysqli_fetch_assoc($resultUser);
 
@@ -91,6 +91,7 @@ if (mysqli_num_rows($result) == 0) {
 
 
         $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+        <a href='update.php?id={$eventId}' class='btn btn-warning'>Update</a>
         </div>
         </div>
         </div>";
@@ -106,7 +107,7 @@ if (mysqli_num_rows($result) == 0) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello <?= $countUser["email"] ?></title>
+  <title>Hello Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
@@ -115,7 +116,7 @@ if (mysqli_num_rows($result) == 0) {
   <nav class="navbar bg-body-tertiary">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50"> Hello <?= $countUser["firstName"] ?></a>
+        <img src="images/logo.jpg" alt="..." width="50" height="50"> Hello Admin </a>
       <a class="navbar-brand" href="index.php">Home</a>
 
       </a>
