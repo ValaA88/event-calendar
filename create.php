@@ -1,7 +1,22 @@
 <?php
 
+session_start();
+
+
+if(isset($_SESSION["admin"])){
+  $session = $_SESSION["admin"];
+  $goBack = "dashboard.php";
+}
+
+if(isset($_SESSION["user"])){
+  $session = $_SESSION["user"];
+  $goBack = "home.php";
+}
+
 require_once('./db_connect_mamp.php');
 require_once('./functions.php');
+
+$fk_users_id = $_SESSION['user'];
 
 if(isset($_POST['create'])){
   $sport = cleanInputs($_POST['sport']);
@@ -12,6 +27,8 @@ if(isset($_POST['create'])){
   $stadium = cleanInputs($_POST['stadium']);
   $groupSeason = cleanInputs($_POST['groupSeason']);
   $originCompetitionName = cleanInputs($_POST['originCompetitionName']);
+
+
 
     $team1 = cleanInputs($_POST['team1']);
     $team2 = cleanInputs($_POST['team2']);
@@ -29,7 +46,7 @@ if(isset($_POST['create'])){
 
 
   // insert for event table
-  $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}')";
+  $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`,`fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
   $resultEvent = mysqli_query($conn, $sqlEvent);
   $fkEventId = $conn->insert_id;
 
@@ -105,7 +122,7 @@ if(isset($_POST['create'])){
       <a class="navbar-brand" href="/">
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
-      <a class="navbar-brand" href="create.php">Login</a>
+      <a class="navbar-brand" href="login.php">Login</a>
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>
 
@@ -184,7 +201,7 @@ if(isset($_POST['create'])){
       </div>
 
       <button type="submit" class="btn btn-success" name="create">Create Event</button>
-      <a href='index.php' class='btn btn-primary'>Back</a>
+      <a href=<?= $goBack?> class='btn btn-primary'>Back</a>
     </form>
   </div>
 </body>

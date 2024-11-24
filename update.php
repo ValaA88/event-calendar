@@ -49,10 +49,10 @@ $eventData = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $eventData['details'] = $row;
     $eventData['teams'][] = [
-        'id' => $row['team_id'],
-        'name' => $row['team_name'],
+        // 'id' => $row['team_id'],
+        'name' => $row['name'],
         'teamCountryCode' => $row['teamCountryCode'],
-        'event_result_id' => $row['event_result_id'],
+        // 'event_result_id' => $row['event_result_id'],
         'teamResult' => $row['teamResult']
     ];
     $eventData['event_result'] = [
@@ -164,7 +164,7 @@ if(isset($_POST['update'])){
   <nav class="navbar bg-body-tertiary">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50">
+        <img src="images/logo.jpg" alt="..." width="50" height="50"> Hello Admin
       </a>
       <a class="navbar-brand" href="create.php">Login</a>
       <a class="navbar-brand" href="#">About us</a>
@@ -177,16 +177,17 @@ if(isset($_POST['update'])){
     <form method="POST">
       <div class="mb-3">
         <label for="sport" class="form-label">Sport</label>
-        <input type="text" class="form-control" id="sport" name="sport" value="<?= $rows["sport"]?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="seasonGame" class="form-label">Season Game</label>
-        <input type="text" class="form-control" id="seasonGame" name="seasonGame" value="<?= $rows["seasonGame"]?>"
+        <input type="text" class="form-control" id="sport" name="sport" value="<?= $eventData['details']['sport'] ?>"
           required>
       </div>
       <div class="mb-3">
+        <label for="seasonGame" class="form-label">Season Game</label>
+        <input type="text" class="form-control" id="seasonGame" name="seasonGame"
+          value="<?= $eventData['details']['seasonGame'] ?>" required>
+      </div>
+      <div class="mb-3">
         <label for="status" class="form-label">Status</label>
-        <select class="form-select" id="status" name="status" value="<?= $rows["status"]?>" required>
+        <select class="form-select" id="status" name="status" value="<?= $eventData['details']['status'] ?>" required>
           <option value="scheduled">Scheduled</option>
           <option value="played">Played</option>
         </select>
@@ -194,30 +195,34 @@ if(isset($_POST['update'])){
       <div class="mb-3">
         <label for="timeVenueUTC" class="form-label">Time (UTC)</label>
         <input type="time" class="form-control" id="timeVenueUTC" name="timeVenueUTC"
-          value="<?= $rows["timeVenueUTC"]?>">
+          value="<?= $eventData['details']['timeVenueUTC'] ?>">
       </div>
       <div class="mb-3">
         <label for="dateVenue" class="form-label">Date</label>
-        <input type="date" class="form-control" id="dateVenue" name="dateVenue" value="<?= $rows["dateVenue"]?>">
+        <input type="date" class="form-control" id="dateVenue" name="dateVenue"
+          value="<?= $eventData['details']['dateVenue'] ?>">
       </div>
       <div class="mb-3">
         <label for="stadium" class="form-label">Stadium</label>
-        <input type="text" class="form-control" id="stadium" name="stadium" value="<?= $rows["stadium"]?>">
+        <input type="text" class="form-control" id="stadium" name="stadium"
+          value="<?= $eventData['details']['stadium'] ?>">
       </div>
       <div class="mb-3">
         <label for="groupSeason" class="form-label">Group Season</label>
-        <input type="text" class="form-control" id="groupSeason" name="groupSeason" value="<?= $rows["groupSeason"]?>">
+        <input type="text" class="form-control" id="groupSeason" name="groupSeason"
+          value="<?= $eventData['details']['groupSeason'] ?>">
       </div>
       <div class="mb-3">
         <label for="originCompetitionName" class="form-label">Origin Competition Name</label>
         <input type="text" class="form-control" id="originCompetitionName" name="originCompetitionName"
-          value="<?= $rows["originCompetitionName"]?>">
+          value="<?= $eventData['details']['originCompetitionName'] ?>">
       </div>
 
       <h3>Teams</h3>
       <div class="mb-3">
         <label for="team1" class="form-label">Team 1 Name</label>
-        <input type="text" class="form-control" id="team1" name="team1" value="<?= $team["team1.name"]?>" required>
+        <input type="text" class="form-control" id="team1" name="team1" value="<?= $eventData['team']['name'] ?>"
+          required>
       </div>
       <div class="mb-3">
         <label for="team1Result" class="form-label">Team 1 Result</label>
@@ -249,41 +254,44 @@ if(isset($_POST['update'])){
       <h3>Result</h3>
       <div class="mb-3">
         <label for="winner" class="form-label">Winner</label>
-        <input type="text" class="form-control" id="winner" name="winner" value="<?= $rows["winner"]?>" required>
+        <input type="text" class="form-control" id="winner" name="winner"
+          value="<?= $eventData['event_result']['winner'] ?>" required>
       </div>
       <div class="mb-3">
         <label for="goals" class="form-label">Total Goals</label>
-        <input type="number" class="form-control" id="goals" name="goals" value="<?= $rows["goals"]?>" required>
+        <input type="number" class="form-control" id="goals" name="goals"
+          value="<?= $eventData['event_result']['goals'] ?>" required>
       </div>
       <div class="mb-3">
         <label for="yellowCards" class="form-label">Total Yellow Cards</label>
-        <input type="number" class="form-control" id="yellowCards" name="yellowCards" value="<?= $rows["yellowCards"]?>"
-          required>
+        <input type="number" class="form-control" id="yellowCards" name="yellowCards"
+          value="<?= $eventData['event_result']['yellowCards'] ?>" required>
       </div>
       <div class="mb-3">
         <label for="redCards" class="form-label">Total Red Cards</label>
-        <input type="number" class="form-control" id="redCards" name="redCards" value="<?= $rows["redCards"]?>"
-          required>
+        <input type="number" class="form-control" id="redCards" name="redCards"
+          value="<?= $eventData['event_result']['redCards'] ?>" required>
       </div>
 
       <h3>Stage</h3>
       <div class="mb-3">
         <label for="stageName" class="form-label">Stage Name</label>
-        <input type="text" class="form-control" id="stageName" name="stageName" value="<?= $rows["stageName"]?>"
-          required>
+        <input type="text" class="form-control" id="stageName" name="stageName"
+          value="<?= $eventData['details']['stageName'] ?>" required>
       </div>
       <div class="mb-3">
         <label for="stagePosition" class="form-label">Stage Position</label>
         <input type="number" class="form-control" id="stagePosition" name="stagePosition"
-          value="<?= $rows["stagePosition"]?>">
+          value="<?= $eventData['details']['stagePosition'] ?>">
       </div>
       <div class="mb-3">
         <label for="ordering" class="form-label">Stage Ordering</label>
-        <input type="text" class="form-control" id="ordering" name="ordering" value="<?= $rows["ordering"]?>">
+        <input type="text" class="form-control" id="ordering" name="ordering"
+          value="<?= $eventData['details']['ordering'] ?>">
       </div>
 
       <button type="submit" class="btn btn-success" name="update">Update Event</button>
-      <a href='index.php' class='btn btn-primary'>Back</a>
+      <a href='dashboard.php' class='btn btn-primary'>Back</a>
     </form>
   </div>
 </body>

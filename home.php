@@ -22,6 +22,7 @@ $countUser = mysqli_fetch_assoc($resultUser);
 $sql = "
 SELECT
     events.id AS event_id,
+    events.fk_users_id,
     events.sport,
     events.seasonGame,
     events.status,
@@ -35,6 +36,7 @@ LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
 LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
 LEFT JOIN team ON team.id = team_event_result.fk_team_id
 LEFT JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
+WHERE events.fk_users_id = 2
 ORDER BY events.id, team_event_result.id
 ";
 
@@ -131,7 +133,12 @@ if (mysqli_num_rows($result) == 0) {
 
     <div class="container">
       <div class="row row-cols-3 .">
-        <?= $layout ?>
+        <div style="padding-top: 20px">
+          <h3>Events you Created:</h3>
+        </div>
+        <div style="padding-top:20px">
+          <?= $layout ?>
+        </div>
       </div>
     </div>
 

@@ -123,7 +123,9 @@ if($error){
       <a href="index.php" class="btn btn-outline-primary">Back to main page</a>
     </div>
     <div style="padding-top: 18px">
-      <a href="register.php" class="btn btn-outline-dark">Register Here</a>
+      <a href="register.php" class="btn btn-outline-success">Register Here</a>
+      <a href="create.php" class="btn btn-outline-dark">Continue as Guest</a>
+
     </div>
   </form>
 </body>
