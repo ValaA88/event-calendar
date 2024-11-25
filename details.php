@@ -178,7 +178,6 @@ if (mysqli_num_rows($result) == 0) {
       <a class="navbar-brand" href="/">
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
-      <a class="navbar-brand" href="login.php">Login</a>
       <a class="btn btn-success" href="login.php">Create an Event</a>
 
       <a class="navbar-brand" href="#">About us</a>

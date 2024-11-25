@@ -2,6 +2,9 @@
 
 session_start();
 
+if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])){
+  $goBack = "index.php";
+}
 
 if(isset($_SESSION["admin"])){
   $session = $_SESSION["admin"];
@@ -16,7 +19,7 @@ if(isset($_SESSION["user"])){
 require_once('./db_connect_mamp.php');
 require_once('./functions.php');
 
-$fk_users_id = $_SESSION['user'];
+
 
 if(isset($_POST['create'])){
   $sport = cleanInputs($_POST['sport']);
@@ -45,10 +48,19 @@ if(isset($_POST['create'])){
   $ordering = $_POST['ordering'];
 
 
-  // insert for event table
-  $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`,`fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
-  $resultEvent = mysqli_query($conn, $sqlEvent);
-  $fkEventId = $conn->insert_id;
+
+  if(isset($_SESSION['admin']) || isset($_SESSION['user'])){
+    // insert for event table
+    $fk_users_id = $_SESSION['user'];
+    $sqlEvent = "INSERT INTO `events`(`sport`,`seasonGame`,`status`,`timeVenueUTC`, `dateVenue`,`stadium`,`groupSeason`,`originCompetitionName`,`fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
+    $resultEvent = mysqli_query($conn, $sqlEvent);
+    $fkEventId = $conn->insert_id;
+  } else {
+    $sqlEvent = "INSERT INTO `events`(`sport`,`seasonGame`,`status`,`timeVenueUTC`,`dateVenue`,`stadium`,`groupSeason`,`originCompetitionName`,`fk_users_id`) VALUES ('{$sport}','   {$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}', null";
+    $resultEvent = mysqli_query($conn, $sqlEvent);
+    $fkEventId = $conn->insert_id;
+  }
+
 
 
   // insert for stage table
@@ -122,7 +134,6 @@ if(isset($_POST['create'])){
       <a class="navbar-brand" href="/">
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
-      <a class="navbar-brand" href="login.php">Login</a>
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>
 
