@@ -7,6 +7,8 @@ require_once('./functions.php');
 
 $goBack = "";
 
+
+
 if(isset($_SESSION['admin'])){
   $session = $_SESSION['admin'];
   $goBack = "dashboard.php";

@@ -58,7 +58,7 @@ if(mysqli_num_rows($result) == 0){
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
+<body style="background-color: #cadedf">
   <nav class="navbar bg-body-tertiary">
     <div class="container">
       <a class="navbar-brand" href="/">
@@ -74,14 +74,13 @@ if(mysqli_num_rows($result) == 0){
 
     </div>
   </nav>
-  <div class="container" style="margin-top: 40px; ">
+  <div class="container" style="margin-top: 40px;">
     <form method="post">
       <div class="container">
         <div class="row row-cols-3." style="padding: 20px">
           <?= $layout ?>
         </div>
       </div>
-      <input type="submit" class="btn btn-success" value="Update" name="blocked">
 
       <a href="dashboard.php" value="back" class="btn btn-danger">Back</a>
 
