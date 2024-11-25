@@ -82,8 +82,6 @@ if (mysqli_num_rows($result) == 0) {
                     'winner' => $row['winner'],
                     'stagePosition' => $row['stagePosition'],
                     'ordering' => $row['ordering'],
-
-
                 ],
                 'teams' => [
                   'name' => [$row['name']],
@@ -111,28 +109,14 @@ if (mysqli_num_rows($result) == 0) {
     $i = 0;
     foreach ($events as $eventId => $eventData) {
         $layout .= "
-        <div class='container' style='padding:50px;'>
+        <div class='container' style='padding:50px; size: 100px;'>
         <div class='card' style='width: 18rem; background-color: #cadedf ;color:black'>
         <div class='card-body'>
-            <h5 class='card-title'>{$eventData['details']['sport']}</h5>
-            <h6 class='card-subtitle mb-2 text-body-secondary'>{$eventData['details']['seasonGame']}</h6>
-            <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
-            <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
-            <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
-            <h9 class='card-title'>stadium: {$eventData['details']['stadium']}</h9><br>
-            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>
-            <h9 class='card-title'>group: {$eventData['details']['groupSeason']}</h9><br>
-            <h9 class='card-title'>Competition Name: {$eventData['details']['originCompetitionName']}</h9><br>
-
-            <h9 class='card-title'>Stage Position: {$eventData['details']['stagePosition']}</h9>
-            <br>
-            <h9 class='card-title'>Stage Ordering: {$eventData['details']['ordering']}</h9>
-            <br>
-
-            <h9 class='card-title'>Winner: {$eventData['details']['winner']}</h9><br>
-            <h9 class='card-title'>Goals: {$eventData['details']['goals']}</h9><br>
-            <h9 class='card-title'>Yellow Cards: {$eventData['details']['yellowCards']}</h9><br>
-            <h9 class='card-title'>Red Cards: {$eventData['details']['redCards']}</h9><br>
+            <h4 class='card-title'>{$eventData['details']['sport']}</h4>
+            <h5 class='card-subtitle mb-2 text-body-secondary'>{$eventData['details']['seasonGame']}</h5>
+            <h6 class='card-title'>Status: {$eventData['details']['status']}</h6><br>
+            <h6 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h6><br>
+            <h6 class='card-title'>Date: {$eventData['details']['dateVenue']}</h6><br>
             "
 
             ;
@@ -143,14 +127,52 @@ if (mysqli_num_rows($result) == 0) {
                 $teamResult = $eventData['result']['teamResult'][$i];
                 $teamCountryCode = $eventData['teams']['teamCountryCode'][$i];
                 $team = $eventData['teams']['name'][$i];
-                $layout .= "<h9 class='card-title'>Team {$count}: {$team} - {$teamResult} - {$teamCountryCode}</h9><br>
-                <h9 class='card-title'>Team Country Code: {$eventData['teams']['teamCountryCode'][$i]}</h9><br>
+                $layout .= "
+                <table class='table'>
+                  <thead>
+                    <tr class='table-secondary'>
+                      <th scope='col'></th>
+                      <th scope='col'>Team</th>
+                      <th scope='col'>Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope='row'></th>
+                    <td>{$count}: {$team}</td>
+                    <td>{$teamResult}</td>
+                  </tr>
+                  <tr>
+                    <th scope='row'></th>
+                    <td>Team Country Code:</td>
+                    <td>{$eventData['teams']['teamCountryCode'][$i]}</td>
+
+                  </tr>
+                  </tbody>
+                </table>
                 ";
                 $count++;
                 $i++;
             }
+            $layout .= "
 
-        $layout .= "<a href='{$goBack}' class='btn btn-primary'>Back</a>
+            <h6 class='card-title'>Winner: {$eventData['details']['winner']}</h6><br>
+            <h6 class='card-title'>Total Goals: {$eventData['details']['goals']}</h6><br>
+            <h6 class='card-title'>Total Yellow Cards: {$eventData['details']['yellowCards']}</h6><br>
+            <h6 class='card-title'>Total Red Cards: {$eventData['details']['redCards']}</h6><br>
+
+            <h9 class='card-title'>stadium: {$eventData['details']['stadium']}</h9><br>
+            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>
+            <h9 class='card-title'>group: {$eventData['details']['groupSeason']}</h9><br>
+            <h9 class='card-title'>Competition Name: {$eventData['details']['originCompetitionName']}</h9><br>
+
+            <h9 class='card-title'>Stage Position: {$eventData['details']['stagePosition']}</h9>
+            <br>
+            <h9 class='card-title'>Stage Ordering: {$eventData['details']['ordering']}</h9>
+            <br>
+        <div style='padding-top: 15px'>
+        <a href='{$goBack}' class='btn btn-primary'>Back</a>
+        </div>
         </div>
         </div>
         </div>";

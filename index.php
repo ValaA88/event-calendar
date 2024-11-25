@@ -86,9 +86,25 @@ if (mysqli_num_rows($result) == 0) {
 
             $count = 1;
             foreach ($eventData['teams'] as $index => $team) {
-                $teamResult = $eventData['result'][$index] ?? '';
+                $teamResult = $eventData['result'][$index] ?? '-';
                 $layout .= "
-               ";
+                <table class='table'>
+                <thead>
+                  <tr>
+                    <th scope='col'></th>
+                    <th scope='col'>Team</th>
+                    <th scope='col'>Result</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <tr>
+                      <th scope='row'></th>
+                      <td>{$count}: {$team}</td>
+                      <td>{$teamResult}</td>
+                    </tr>
+                  </tbody>
+              </table>";
+
                 $count++;
             }
 

@@ -95,6 +95,7 @@ if($error){
       <a class="navbar-brand" href="/">
         <img src="images/logo.jpg" alt="..." width="50" height="50">
       </a>
+      <a class="navbar-brand" href="index.php">Home</a>
 
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>
