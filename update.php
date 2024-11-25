@@ -7,7 +7,9 @@ require_once('./functions.php');
 
 $goBack = "";
 
-
+if(!isset($_SESSION['admin']) && !isset($_SESSION['user'])){
+  header('location: login.php');
+}
 
 if(isset($_SESSION['admin'])){
   $session = $_SESSION['admin'];
