@@ -99,7 +99,7 @@ if(isset($_POST['create'])){
   if ($resultEvent) {
     echo "<div class='alert alert-success' role='alert'>
     <h4 class='alert-heading'>Well done! </h4>
-    <p>Your Product has been Created successfully!</p>
+    <p>Your Event has been Created successfully!</p>
     <hr>
     <p class='mb-0'> now you can find it on the main page.</p>
   </div>";
@@ -154,7 +154,7 @@ if(isset($_POST['create'])){
         <label for="status" class="form-label">Status</label>
         <select class="form-select" id="status" name="status" required>
           <option value="scheduled">Scheduled</option>
-          <option value="played">Played</option>
+
         </select>
       </div>
       <div class="mb-3">

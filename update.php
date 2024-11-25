@@ -133,7 +133,7 @@ if(isset($_POST['update'])){
  if ($resultEventUpdate) {
   echo "<div class='alert alert-success' role='alert'>
   <h4 class='alert-heading'>Well done! </h4>
-  <p>Your Product has been Created successfully!</p>
+  <p>Your Event has been Updated successfully!</p>
   <hr>
   <p class='mb-0'> now you can find it on the main page.</p>
 </div>";
@@ -224,7 +224,7 @@ if(isset($_POST['update'])){
 
       <?php $index++ ?>
       <div class="mb-3">
-        <label for="team<?= $index ?>_name" class="form-label">Team 1 Name</label>
+        <label for="team<?= $index ?>_name" class="form-label">Team <?= $index ?> Name</label>
         <input type="text" class="form-control" id="team<?= $index ?>_name" name="team<?= $index ?>_name"
           value="<?= $team['name'] ?>" required>
       </div>
