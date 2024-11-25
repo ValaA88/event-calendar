@@ -36,7 +36,7 @@ LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
 LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
 LEFT JOIN team ON team.id = team_event_result.fk_team_id
 LEFT JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
-WHERE events.fk_users_id = 2
+WHERE events.fk_users_id = {$_SESSION['user']}
 ORDER BY events.id, team_event_result.id
 ";
 
@@ -44,7 +44,7 @@ $result = mysqli_query($conn, $sql);
 
 
 if (mysqli_num_rows($result) == 0) {
-    $layout = "No Result";
+    $layout = "<h5>No Event has been created yet</h5>";
 } else {
     $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
