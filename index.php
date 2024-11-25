@@ -87,9 +87,11 @@ if (mysqli_num_rows($result) == 0) {
             $count = 1;
             foreach ($eventData['teams'] as $index => $team) {
                 $teamResult = $eventData['result'][$index] ?? '';
-                $layout .= "<h9 class='card-title' style='color:#black'>Team {$count}: {$team} - {$teamResult}</h9><br>";
+                $layout .= "
+               ";
                 $count++;
             }
+
 
 
         $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>

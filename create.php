@@ -52,11 +52,11 @@ if(isset($_POST['create'])){
   if(isset($_SESSION['admin']) || isset($_SESSION['user'])){
     // insert for event table
     $fk_users_id = $_SESSION['user'];
-    $sqlEvent = "INSERT INTO `events`(`sport`,`seasonGame`,`status`,`timeVenueUTC`, `dateVenue`,`stadium`,`groupSeason`,`originCompetitionName`,`fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
+    $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`, `fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
     $resultEvent = mysqli_query($conn, $sqlEvent);
     $fkEventId = $conn->insert_id;
   } else {
-    $sqlEvent = "INSERT INTO `events`(`sport`,`seasonGame`,`status`,`timeVenueUTC`,`dateVenue`,`stadium`,`groupSeason`,`originCompetitionName`,`fk_users_id`) VALUES ('{$sport}','   {$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}', null";
+    $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`, `fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}',null)";
     $resultEvent = mysqli_query($conn, $sqlEvent);
     $fkEventId = $conn->insert_id;
   }
