@@ -122,6 +122,8 @@ if (mysqli_num_rows($result) == 0) {
       </a>
       <a class="navbar-brand" href="logout.php?logout">Logout</a>
       <a class="btn btn-success" href="create.php">Create an Event</a>
+      <a class="navbar-brand" href="allUsers.php">All Users</a>
+
       <a class="navbar-brand" href="#">About us</a>
       <a class="navbar-brand" href="#">FAQ</a>
 
