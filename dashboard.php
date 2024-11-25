@@ -92,6 +92,8 @@ if (mysqli_num_rows($result) == 0) {
 
         $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
         <a href='update.php?id={$eventId}' class='btn btn-warning'>Update</a>
+        <a href='delete.php?id={$eventId}' class='btn btn-danger'>Delete</a>
+
         </div>
         </div>
         </div>";
