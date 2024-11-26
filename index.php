@@ -73,6 +73,7 @@ if (mysqli_num_rows($result) == 0) {
     }
 
     foreach ($events as $eventId => $eventData) {
+        $formattedDate = date('l d.m.Y', strtotime($eventData['details']['dateVenue']));
         $layout .= "
         <div style='padding: 30px; '>
         <div class='card' style='width: 18rem ; background-color: #white ;color:black' >
@@ -81,7 +82,7 @@ if (mysqli_num_rows($result) == 0) {
             <h6 class='card-subtitle'>{$eventData['details']['seasonGame']}</h6>
             <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
             <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
-            <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
+            <h9 class='card-title'>Date: {$formattedDate}</h9><br>
             <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
 
             $count = 1;
