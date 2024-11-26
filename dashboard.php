@@ -29,7 +29,9 @@ SELECT
     events.dateVenue,
     stage.stageName,
     team.name AS team_name,
-    event_result.teamResult AS team_result
+    event_result.team1Result AS team1_result,
+    event_result.team2Result AS team2_result
+
 FROM events
 LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
 LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
@@ -65,7 +67,8 @@ if (mysqli_num_rows($result) == 0) {
     }
     if (!empty($row['team_name']) || !empty($row['team_result'])) {
       $events[$eventId]['teams'][] = $row['team_name'];
-      $events[$eventId]['result'][] = $row['team_result'];
+      $events[$eventId]['result'][] = $row['team1_result'];
+      $events[$eventId]['result'][] = $row['team2_result'];
     }
   }
 

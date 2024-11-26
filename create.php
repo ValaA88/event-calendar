@@ -69,7 +69,7 @@ if (isset($_POST['create'])) {
   $fkStageId = $conn->insert_id;
 
   // insert for event_result table
-  $sqlEventResult = "INSERT INTO `event_result`(`teamResult`, `winner`, `goals`, `yellowCards`, `redCards`) VALUES (null, null, null, null, null)";
+  $sqlEventResult = "INSERT INTO `event_result`(`team1Result`,`team2Result`, `winner`, `goals`, `yellowCards`, `redCards`) VALUES (null, null, null, null, null, null)";
 
   $resultEventResult = mysqli_query($conn, $sqlEventResult);
   $fkEventResultId = $conn->insert_id;

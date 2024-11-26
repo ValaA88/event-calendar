@@ -14,7 +14,8 @@ events.dateVenue,
 events.stadium,
 events.groupSeason,
 events.originCompetitionName,
-event_result.teamResult,
+event_result.team1Result,
+event_result.team2Result,
 event_result.winner,
 event_result.goals,
 event_result.yellowCards,
@@ -36,6 +37,6 @@ $row = mysqli_fetch_assoc($result);
 $sqlDelete = "DELETE FROM events WHERE id = {$id}";
 $resultDelete = mysqli_query($conn, $sqlDelete);
 
-if($resultDelete){
+if ($resultDelete) {
   header("location: dashboard.php"); //take care of teh location later, maybe index is needed!
 }

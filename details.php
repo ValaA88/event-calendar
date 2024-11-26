@@ -32,7 +32,9 @@ events.dateVenue,
 events.stadium,
 events.groupSeason,
 events.originCompetitionName,
-event_result.teamResult,
+event_result.team1Result,
+event_result.team2Result,
+
 event_result.winner,
 event_result.goals,
 event_result.yellowCards,
@@ -89,22 +91,26 @@ if (mysqli_num_rows($result) == 0) {
 
         ],
         'result' => [
-          'teamResult' => [$row['teamResult']],
+          'team1Result' => [$row['team1Result']],
+          'team2Result' => [$row['team2Result']],
+
 
         ]
       ];
     }
 
-    if ($count == 1 && (!empty($row['name']) || !empty($row['teamResult']) || !empty($row['teamCountryCode']))) {
+    if ($count == 1 && (!empty($row['name']) || !empty($row['team1Result']) || !empty($row['team2Result']) || !empty($row['teamCountryCode']))) {
       $events[$eventId]['teams']["name"][] = $row['name'];
-      $events[$eventId]['result']["teamResult"][] = $row['teamResult'];
+      $events[$eventId]['result']['team1Result'][] = $row['team1Result'];
+      $events[$eventId]['result']['team2Result'][] = $row['team2Result'];
+
       # $events[$eventId]['result'][] = $row['teamResult'];
       $events[$eventId]['teams']['teamCountryCode'][] = $row['teamCountryCode'];
     }
     $count++;
   }
 
-  $i = 0;
+
   foreach ($events as $eventId => $eventData) {
     $formattedDate = date('l d.m.Y', strtotime($eventData['details']['dateVenue']));
     $layout .= "
@@ -118,62 +124,68 @@ if (mysqli_num_rows($result) == 0) {
             <h6 class='card-title'>Date: {$formattedDate}</h6><br>
             ";
 
-    $count = 1;
-    $i = 0;
-    foreach ($eventData['teams'] as $index => $team) {
-      $teamResult = $eventData['result']['teamResult'][$i] ?? '-';
-      $teamCountryCode = $eventData['teams']['teamCountryCode'][$i];
-      $team = $eventData['teams']['name'][$i];
-      $layout .= "
-                <table class='table'>
-                  <thead>
-                    <tr class='table-secondary'>
-                      <th scope='col'></th>
-                      <th scope='col'>Team</th>
-                      <th scope='col'>Result</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <th scope='row'></th>
-                    <td>{$count}: {$team}</td>
-                    <td>{$teamResult}</td>
-                  </tr>
-                  <tr>
-                    <th scope='row'></th>
-                    <td>Team Country Code:</td>
-                    <td>{$eventData['teams']['teamCountryCode'][$i]}</td>
-
-                  </tr>
-                  </tbody>
-                </table>
-                ";
-      $count++;
-      $i++;
-    }
     $layout .= "
+        <table class='table'>
+          <thead>
+            <tr class='table-secondary'>
+              <th scope='col'>#</th>
+              <th scope='col'>Team</th>
+              <th scope='col'>Country</th>
+              <th scope='col'>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+    ";
 
+    $team1Name = $eventData['teams']['name'][0] ?? '-';
+    $team1CountryCode = $eventData['teams']['teamCountryCode'][0] ?? '-';
+    $team1Result = $eventData['result']['team1Result'][0] ?? '-';
+
+    $layout .= "
+        <tr>
+          <th scope='row'>1</th>
+          <td>{$team1Name}</td>
+          <td>{$team1CountryCode}</td>
+          <td>{$team1Result}</td>
+        </tr>
+    ";
+
+    $team2Name = $eventData['teams']['name'][1] ?? '-';
+    $team2CountryCode = $eventData['teams']['teamCountryCode'][1] ?? '-';
+    $team2Result = $eventData['result']['team2Result'][0] ?? '-';
+
+    $layout .= "
+        <tr>
+          <th scope='row'>2</th>
+          <td>{$team2Name}</td>
+          <td>{$team2CountryCode}</td>
+          <td>{$team2Result}</td>
+        </tr>
+    ";
+
+    $layout .= "
+          </tbody>
+        </table>
+    ";
+
+    $layout .= "
             <h6 class='card-title'>Winner: {$eventData['details']['winner']}</h6><br>
             <h6 class='card-title'>Total Goals: {$eventData['details']['goals']}</h6><br>
             <h6 class='card-title'>Total Yellow Cards: {$eventData['details']['yellowCards']}</h6><br>
             <h6 class='card-title'>Total Red Cards: {$eventData['details']['redCards']}</h6><br>
-
-            <h9 class='card-title'>stadium: {$eventData['details']['stadium']}</h9><br>
+            <h9 class='card-title'>Stadium: {$eventData['details']['stadium']}</h9><br>
             <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>
-            <h9 class='card-title'>group: {$eventData['details']['groupSeason']}</h9><br>
+            <h9 class='card-title'>Group: {$eventData['details']['groupSeason']}</h9><br>
             <h9 class='card-title'>Competition Name: {$eventData['details']['originCompetitionName']}</h9><br>
-
-            <h9 class='card-title'>Stage Position: {$eventData['details']['stagePosition']}</h9>
-            <br>
-            <h9 class='card-title'>Stage Ordering: {$eventData['details']['ordering']}</h9>
-            <br>
-        <div style='padding-top: 15px'>
-        <a href='{$goBack}' class='btn btn-primary'>Back</a>
+            <h9 class='card-title'>Stage Position: {$eventData['details']['stagePosition']}</h9><br>
+            <h9 class='card-title'>Stage Ordering: {$eventData['details']['ordering']}</h9><br>
+            <div style='padding-top: 15px'>
+                <a href='{$goBack}' class='btn btn-primary'>Back</a>
+            </div>
         </div>
         </div>
         </div>
-        </div>";
-    $i++;
+    ";
   }
 }
 ?>

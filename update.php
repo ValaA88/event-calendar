@@ -7,11 +7,11 @@ require_once('./functions.php');
 
 $goBack = "";
 
-if(!isset($_SESSION['admin']) && !isset($_SESSION['user'])){
+if (!isset($_SESSION['admin']) && !isset($_SESSION['user'])) {
   header('location: login.php');
 }
 
-if(isset($_SESSION['admin'])){
+if (isset($_SESSION['admin'])) {
   $session = $_SESSION['admin'];
   $goBack = "dashboard.php";
 }
@@ -30,7 +30,9 @@ events.dateVenue,
 events.stadium,
 events.groupSeason,
 events.originCompetitionName,
-event_result.teamResult,
+event_result.team1Result,
+event_result.team2Result,
+
 event_result.winner,
 event_result.goals,
 event_result.yellowCards,
@@ -55,23 +57,26 @@ $result = mysqli_query($conn, $sql);
 
 $eventData = [];
 while ($row = mysqli_fetch_assoc($result)) {
-    $eventData['details'] = $row;
-    $eventData['teams'][] = [
-        'id' => $row['team_id'],
-        'name' => $row['name'],
-        'teamCountryCode' => $row['teamCountryCode'],
-        'event_result_id' => $row['fk_event_result_id'],
-        'teamResult' => $row['teamResult']
-    ];
-    $eventData['event_result'] = [
-        'winner' => $row['winner'],
-        'goals' => $row['goals'],
-        'yellowCards' => $row['yellowCards'],
-        'redCards' => $row['redCards']
-    ];
+  $eventData['details'] = $row;
+  $eventData['teams'][] = [
+    'id' => $row['team_id'],
+    'name' => $row['name'],
+    'teamCountryCode' => $row['teamCountryCode'],
+    'event_result_id' => $row['fk_event_result_id'],
+
+  ];
+  $eventData['event_result'] = [
+    'winner' => $row['winner'],
+    'goals' => $row['goals'],
+    'yellowCards' => $row['yellowCards'],
+    'redCards' => $row['redCards'],
+    'team1Result' => $row['team1Result'],
+    'team2Result' => $row['team2Result']
+
+  ];
 }
 
-if(isset($_POST['update'])){
+if (isset($_POST['update'])) {
   $sport = cleanInputs($_POST['sport']);
   $seasonGame = cleanInputs($_POST['seasonGame']);
   $status = cleanInputs($_POST['status']);
@@ -80,6 +85,9 @@ if(isset($_POST['update'])){
   $stadium = cleanInputs($_POST['stadium']);
   $groupSeason = cleanInputs($_POST['groupSeason']);
   $originCompetitionName = cleanInputs($_POST['originCompetitionName']);
+
+  $team1Result = ($_POST['team1Result']) ?? null;
+  $team2Result = ($_POST['team2Result']) ?? null;
 
   $winner = ($_POST['winner']) ?? null;
   $goals = ($_POST['goals']) ?? null;
@@ -90,63 +98,62 @@ if(isset($_POST['update'])){
   $stagePosition = cleanInputs($_POST['stagePosition']);
   $ordering = $_POST['ordering'];
 
-   // insert for event table
-   $sqlEventUpdate = "UPDATE `events` SET `sport`='{$sport}',`seasonGame`='{$seasonGame}',`status`='{$status}',`timeVenueUTC`='{$timeVenueUTC}',`dateVenue`='{$dateVenue}',`stadium`='{$stadium}',`groupSeason`='{$groupSeason}',`originCompetitionName`='{$originCompetitionName}' WHERE id = {$eventId}";
-   $resultEventUpdate = mysqli_query($conn, $sqlEventUpdate);
+
+  // insert for event table
+  $sqlEventUpdate = "UPDATE `events` SET `sport`='{$sport}',`seasonGame`='{$seasonGame}',`status`='{$status}',`timeVenueUTC`='{$timeVenueUTC}',`dateVenue`='{$dateVenue}',`stadium`='{$stadium}',`groupSeason`='{$groupSeason}',`originCompetitionName`='{$originCompetitionName}' WHERE id = {$eventId}";
+  $resultEventUpdate = mysqli_query($conn, $sqlEventUpdate);
   //  $fkEventId = $conn->insert_id;
 
 
- // insert for stage table
- $sqlStageUpdate ="UPDATE `stage` SET `stageName`='{$stageName}',`ordering`='{$ordering}' WHERE id = {$eventData['details']['id']}";
- $resultStageUpdate = mysqli_query($conn, $sqlStageUpdate);
-//  $fkStageId = $conn->insert_id;
+  // insert for stage table
+  $sqlStageUpdate = "UPDATE `stage` SET `stageName`='{$stageName}',`ordering`='{$ordering}' WHERE id = {$eventData['details']['id']}";
+  $resultStageUpdate = mysqli_query($conn, $sqlStageUpdate);
+  //  $fkStageId = $conn->insert_id;
 
 
-// insert for event_result table(in update only inside loop)
- $sqlEventResultUpdate = "UPDATE `event_result` SET `winner`='{$winner}',`goals`='{$goals}',`yellowCards`='{$yellowCards}',`redCards`='{$redCards}' WHERE id = {$eventData['details']['fk_event_result_id']}";
+  // insert for event_result table(in update only inside loop)
+  $sqlEventResultUpdate = "UPDATE `event_result` SET `team1Result` = '$team1Result',`team2Result` = '$team2Result',`winner`='{$winner}',`goals`='{$goals}',`yellowCards`='{$yellowCards}',`redCards`='{$redCards}' WHERE id = {$eventData['details']['fk_event_result_id']}";
 
- $resultEventResultUpdate = mysqli_query($conn, $sqlEventResultUpdate);
-//  $fkEventResultId = $conn->insert_id;
+  $resultEventResultUpdate = mysqli_query($conn, $sqlEventResultUpdate);
+  //  $fkEventResultId = $conn->insert_id;
 
- foreach ($eventData['teams'] as $index => $team) {
-  $index++;
-  $teamName = cleanInputs($_POST["team{$index}_name"]);
-  $teamCountryCode = cleanInputs($_POST["team{$index}_countryCode"]);
-  $teamResult = cleanInputs($_POST["team{$index}_result"]);
+  foreach ($eventData['teams'] as $index => $team) {
+    $teamName = cleanInputs($_POST["team" . ($index + 1) . "_name"]);
+    $teamCountryCode = cleanInputs($_POST["team" . ($index + 1) . "_countryCode"]);
 
 
-  $sqlTeamUpdate = "UPDATE team
+
+    $sqlTeamUpdate = "UPDATE team
   SET name = '$teamName',
       teamCountryCode = '$teamCountryCode',
       stagePosition = '$stagePosition'
   WHERE id = {$team['id']}
   ";
-  $resultTeamUpdate = mysqli_query($conn, $sqlTeamUpdate);
+    $resultTeamUpdate = mysqli_query($conn, $sqlTeamUpdate);
 
-  $sqlTeamResultUpdate = "UPDATE event_result
-  SET teamResult = '$teamResult'
-  WHERE id = {$team['event_result_id']}
-  ";
-  $resultTeamResultUpdate = mysqli_query($conn, $sqlTeamResultUpdate);
-}
+    //   $sqlTeamResultUpdate = "UPDATE event_result
+    // SET `team1Result` = '$team1Result',`team2Result` = '$team2Result'
+    // WHERE id = {$team['event_result_id']}
+    // ";
+    //   $resultTeamResultUpdate = mysqli_query($conn, $sqlTeamResultUpdate);
+  }
 
- if ($resultEventUpdate) {
-  echo "<div class='alert alert-success' role='alert'>
+  if ($resultEventUpdate) {
+    echo "<div class='alert alert-success' role='alert'>
   <h4 class='alert-heading'>Well done! </h4>
   <p>Your Event has been Updated successfully!</p>
   <hr>
   <p class='mb-0'> now you can find it on the main page.</p>
 </div>";
-  header("refresh: 3; url=home.php");
-} else {
-  echo "<div class='alert alert-danger' role='alert'>
+    header("refresh: 3; url=dashboard.php");
+  } else {
+    echo "<div class='alert alert-danger' role='alert'>
 <h4 class='alert-heading'>something went wrong</h4>
 <p>Your Product did not create!</p>
 <hr>
 <p class='mb-0'>Please try again.</p>
 </div>";
-}
-
+  }
 }
 ?>
 
@@ -213,24 +220,28 @@ if(isset($_POST['update'])){
 
       <h3>Teams</h3>
       <?php foreach ($eventData['teams'] as $index => $team): ?>
-
-      <?php $index++ ?>
-      <div class="mb-3">
-        <label for="team<?= $index ?>_name" class="form-label">Team <?= $index ?> Name</label>
-        <input type="text" class="form-control" id="team<?= $index ?>_name" name="team<?= $index ?>_name"
-          value="<?= $team['name'] ?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="team<?= $index ?>_result" class="form-label">Team <?= $index ?> Result</label>
-        <input type="text" class="form-control" id="team<?= $index ?>_result" name="team<?= $index ?>_result"
-          value="<?= $team['teamResult'] ?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="team<?= $index ?>_countryCode" class="form-label">Team <?= $index ?> Country Code</label>
-        <input type="text" class="form-control" id="team<?= $index ?>_countryCode" name="team<?= $index ?>_countryCode"
-          value="<?= $team['teamCountryCode'] ?>" required>
-      </div>
+        <div class="mb-3">
+          <label for="team<?= $index + 1 ?>_name" class="form-label">Team <?= $index + 1 ?> Name</label>
+          <input type="text" class="form-control" id="team<?= $index + 1 ?>_name" name="team<?= $index + 1 ?>_name"
+            value="<?= htmlspecialchars($team['name']) ?>" required>
+        </div>
+        <div class="mb-3">
+          <label for="team<?= $index + 1 ?>_countryCode" class="form-label">Team <?= $index + 1 ?> Country Code</label>
+          <input type="text" class="form-control" id="team<?= $index + 1 ?>_countryCode"
+            name="team<?= $index + 1 ?>_countryCode" value="<?= htmlspecialchars($team['teamCountryCode']) ?>" required>
+        </div>
       <?php endforeach; ?>
+
+      <div class="mb-3">
+        <label for="team1Result" class="form-label">Team 1 Result</label>
+        <input type="text" class="form-control" id="team1Result" name="team1Result"
+          value="<?= $eventData['event_result']['team1Result'] ?>" required>
+      </div>
+      <div class="mb-3">
+        <label for="team2Result" class="form-label">Team 2 Result</label>
+        <input type="text" class="form-control" id="team2Result" name="team2Result"
+          value="<?= $eventData['event_result']['team2Result'] ?>" required>
+      </div>
 
       <h3>Result</h3>
       <div class="mb-3">
