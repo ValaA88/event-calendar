@@ -163,16 +163,8 @@ if(isset($_POST['update'])){
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50"> Hello Admin
-      </a>
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
+  <?php include "components/navbar.php" ?>
 
-    </div>
-  </nav>
   <div class="container mt-5">
     <h1>Update Event</h1>
     <form method="POST">

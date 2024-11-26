@@ -2,16 +2,16 @@
 
 session_start();
 
-if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])){
+if (!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
   $goBack = "index.php";
 }
 
-if(isset($_SESSION["admin"])){
+if (isset($_SESSION["admin"])) {
   $session = $_SESSION["admin"];
   $goBack = "dashboard.php";
 }
 
-if(isset($_SESSION["user"])){
+if (isset($_SESSION["user"])) {
   $session = $_SESSION["user"];
   $goBack = "home.php";
 }
@@ -21,7 +21,7 @@ require_once('./functions.php');
 
 
 
-if(isset($_POST['create'])){
+if (isset($_POST['create'])) {
   $sport = cleanInputs($_POST['sport']);
   $seasonGame = cleanInputs($_POST['seasonGame']);
   $status = cleanInputs($_POST['status']);
@@ -33,10 +33,10 @@ if(isset($_POST['create'])){
 
 
 
-    $team1 = cleanInputs($_POST['team1']);
-    $team2 = cleanInputs($_POST['team2']);
-    $team1CountryCode =$_POST['team1CountryCode'];
-    $team2CountryCode =$_POST['team2CountryCode'];
+  $team1 = cleanInputs($_POST['team1']);
+  $team2 = cleanInputs($_POST['team2']);
+  $team1CountryCode = $_POST['team1CountryCode'];
+  $team2CountryCode = $_POST['team2CountryCode'];
   // ## we take that out
   //   $winner = ($_POST['winner']) ?? null;
   //   $goals = ($_POST['goals']) ?? null;
@@ -49,7 +49,7 @@ if(isset($_POST['create'])){
 
 
 
-  if(isset($_SESSION['admin']) || isset($_SESSION['user'])){
+  if (isset($_SESSION['admin']) || isset($_SESSION['user'])) {
     // insert for event table
     $fk_users_id = $_SESSION['user'];
     $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`, `fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
@@ -64,7 +64,7 @@ if(isset($_POST['create'])){
 
 
   // insert for stage table
-  $sqlStage ="INSERT INTO `stage`(`stageName`,`ordering`) VALUES ('{$stageName}','{$ordering}')";
+  $sqlStage = "INSERT INTO `stage`(`stageName`,`ordering`) VALUES ('{$stageName}','{$ordering}')";
   $resultStage = mysqli_query($conn, $sqlStage);
   $fkStageId = $conn->insert_id;
 
@@ -84,10 +84,10 @@ if(isset($_POST['create'])){
 
 
 
-  foreach($teams as $team){
+  foreach ($teams as $team) {
     // insert for team table
     $sqlTeam = "INSERT INTO `team`(`name`,`teamCountryCode`,`stagePosition`) VALUES ('{$team['name']}','{$team['teamCountryCode']}','{$stagePosition}')";
-    $resultTeam = mysqli_query($conn,$sqlTeam);
+    $resultTeam = mysqli_query($conn, $sqlTeam);
     $fkTeamId = $conn->insert_id;
 
 
@@ -129,16 +129,8 @@ if(isset($_POST['create'])){
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50">
-      </a>
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
+  <?php include "components/navbar.php" ?>
 
-    </div>
-  </nav>
   <div class="container mt-5">
     <h1>Create a New Event</h1>
     <form method="POST">
@@ -212,7 +204,7 @@ if(isset($_POST['create'])){
       </div>
 
       <button type="submit" class="btn btn-success" name="create">Create Event</button>
-      <a href=<?= $goBack?> class='btn btn-primary'>Back</a>
+      <a href=<?= $goBack ?> class='btn btn-primary'>Back</a>
     </form>
   </div>
 </body>

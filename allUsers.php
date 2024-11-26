@@ -2,11 +2,11 @@
 
 session_start();
 
-if(!isset($_SESSION['admin']) && !isset($_SESSION['user'])){
+if (!isset($_SESSION['admin']) && !isset($_SESSION['user'])) {
   header("location: login.php");
 }
 
-if(isset($_SESSION['user'])){
+if (isset($_SESSION['user'])) {
   header("location: home.php");
 }
 
@@ -17,11 +17,11 @@ $layout = $status = "";
 $sql = "SELECT * FROM `users` WHERE `status` != 'adm'";
 $result = mysqli_query($conn, $sql);
 
-if(mysqli_num_rows($result) == 0){
+if (mysqli_num_rows($result) == 0) {
   $layout = "No result";
 } else {
   $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-  foreach($row as $value){
+  foreach ($row as $value) {
     $layout .= "
     <div style='padding: 30px; '>
     <div class='card' style='width: 18rem;'>
@@ -32,12 +32,12 @@ if(mysqli_num_rows($result) == 0){
       <h6 class='card-title'>Email: {$value['email']}</h6><br>
       <label name='blocked'>
       <p value=''> status: {$value['status']}</p>";
-      if($value['is_blocked'] == 0){
-        $layout .= "<a href='blocked_users.php?id={$value['id']}' class='btn btn-warning'>Block</a>";
-      }else {
-        $layout .= "<a href='unblocked_users.php?id={$value['id']}' class='btn btn-success'>Active</a>";
-      }
-      $layout .="
+    if ($value['is_blocked'] == 0) {
+      $layout .= "<a href='blocked_users.php?id={$value['id']}' class='btn btn-warning'>Block</a>";
+    } else {
+      $layout .= "<a href='unblocked_users.php?id={$value['id']}' class='btn btn-success'>Active</a>";
+    }
+    $layout .= "
       </label>
       </div>
       </div>
@@ -59,21 +59,7 @@ if(mysqli_num_rows($result) == 0){
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50"> Hello Admin </a>
-      <a class="navbar-brand" href="index.php">Home</a>
-
-      </a>
-      <a class="navbar-brand" href="logout.php?logout">Logout</a>
-      <a class="btn btn-success" href="create.php">Create an Event</a>
-
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
-
-    </div>
-  </nav>
+  <?php include "components/navbar.php" ?>
   <div class="container" style="margin-top: 40px;">
     <form method="post">
       <div class="container">

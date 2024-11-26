@@ -28,13 +28,13 @@ LEFT JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
 
 $filterInput = [];
 if (!empty($sportFilter)) {
-    $filterInput[] = "events.sport = '$sportFilter'";
+  $filterInput[] = "events.sport = '$sportFilter'";
 }
 if (!empty($dateFilter)) {
-    $filterInput[] = "DATE(events.dateVenue) = '$dateFilter'";
+  $filterInput[] = "DATE(events.dateVenue) = '$dateFilter'";
 }
 if (!empty($filterInput)) {
-    $sql .= " WHERE " . implode(" AND ", $filterInput);
+  $sql .= " WHERE " . implode(" AND ", $filterInput);
 }
 
 $sql .= " ORDER BY events.id, team_event_result.id";
@@ -44,37 +44,37 @@ $result = mysqli_query($conn, $sql);
 $layout = "";
 
 if (mysqli_num_rows($result) == 0) {
-    $layout = "No Result";
+  $layout = "No Result";
 } else {
-    $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+  $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    $events = [];
-    foreach ($rows as $row) {
-        $eventId = $row['event_id'];
-        if (!isset($events[$eventId])) {
-            $events[$eventId] = [
-                'details' => [
-                    'sport' => $row['sport'],
-                    'seasonGame' => $row['seasonGame'],
-                    'status' => $row['status'],
-                    'timeVenueUTC' => $row['timeVenueUTC'],
-                    'dateVenue' => $row['dateVenue'],
-                    'stageName' => $row['stageName']
-                ],
-                'teams' => [],
-                'result' => []
-            ];
-        }
-        if (!empty($row['team_name']) || !empty($row['team_result'])) {
-            $events[$eventId]['teams'][] = $row['team_name'];
-            $events[$eventId]['result'][] = $row['team_result'];
-
-        }
+  $events = [];
+  foreach ($rows as $row) {
+    $eventId = $row['event_id'];
+    if (!isset($events[$eventId])) {
+      $events[$eventId] = [
+        'details' => [
+          'sport' => $row['sport'],
+          'seasonGame' => $row['seasonGame'],
+          'status' => $row['status'],
+          'timeVenueUTC' => $row['timeVenueUTC'],
+          'dateVenue' => $row['dateVenue'],
+          'stageName' => $row['stageName']
+        ],
+        'teams' => [],
+        'result' => []
+      ];
     }
+    if (!empty($row['team_name']) || !empty($row['team_result'])) {
+      $events[$eventId]['teams'][] = $row['team_name'];
+      $events[$eventId]['result'][] = $row['team_result'];
+    }
+  }
 
-    foreach ($events as $eventId => $eventData) {
-        $formattedDate = date('l d.m.Y', strtotime($eventData['details']['dateVenue']));
-        $layout .= "
+  foreach ($events as $eventId => $eventData) {
+
+    $formattedDate = date('l d.m.Y', strtotime($eventData['details']['dateVenue']));
+    $layout .= "
         <div style='padding: 30px; '>
         <div class='card' style='width: 18rem ; background-color: #white ;color:black' >
         <div class='card-body'>
@@ -83,13 +83,8 @@ if (mysqli_num_rows($result) == 0) {
             <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
             <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
             <h9 class='card-title'>Date: {$formattedDate}</h9><br>
-            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
-
-            $count = 1;
-            foreach ($eventData['teams'] as $index => $team) {
-                $teamResult = $eventData['result'][$index] ?? '-';
-                $layout .= "
-                <table class='table'>
+            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>
+            <table class='table'>
                 <thead>
                   <tr>
                     <th scope='col'></th>
@@ -98,24 +93,36 @@ if (mysqli_num_rows($result) == 0) {
                   </tr>
                 </thead>
                   <tbody>
-                    <tr>
-                      <th scope='row'></th>
+
+
+            ";
+    $rows = "";
+    $count = 1;
+    foreach ($eventData['teams'] as $index => $team) {
+
+      $teamResult = $eventData['result'][$index] ?? '-';
+      $rows .= "
+                <tr>
+                <th scope='row'>
                       <td>{$count}: {$team}</td>
-                      <td>{$teamResult}</td>
-                    </tr>
-                  </tbody>
-              </table>";
-
-                $count++;
-            }
+                      <td>{$teamResult}</td></th>
+                      </tr>";
 
 
+      $count++;
+    }
 
-        $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+    $layout .=  $rows;
+    $layout .= "</tbody>
+            </table>";
+
+
+
+    $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
         </div>
         </div>
         </div>";
-    }
+  }
 }
 ?>
 
@@ -130,23 +137,11 @@ if (mysqli_num_rows($result) == 0) {
   <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50">
-        <a class="navbar-brand" href="index.php">Home</a>
-
-      </a>
-      <a class="navbar-brand" href="login.php">Login</a>
-      <a class="btn btn-success" href="login.php">Create an Event</a>
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
-
-    </div>
-  </nav>
+  <?php include "components/navbar.php" ?>
 
   <div class="container my-4">
     <h5>Filter Events</h5>

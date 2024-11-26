@@ -15,7 +15,7 @@ $error = false;
 $firstName = $lastName = $email = $password = $dateOfBirth = "";
 $fnameError = $lnameError = $emailError = $passError = $dateError = "";
 
-if(isset($_POST['register'])){
+if (isset($_POST['register'])) {
   $firstName = cleanInputs($_POST['firstName']);
   $lastName = cleanInputs($_POST['lastName']);
   $email = cleanInputs($_POST['email']);
@@ -23,25 +23,25 @@ if(isset($_POST['register'])){
   $dateOfBirth = cleanInputs($_POST['dateOfBirth']);
 
   #first name validation
-  if(empty($firstName)){
+  if (empty($firstName)) {
     $error = true;
     $fnameError = 'You can leave the first name empty';
-  } elseif(strlen($firstName) < 3){
+  } elseif (strlen($firstName) < 3) {
     $error = true;
     $fnameError = "First name must be at least 3 chars";
-  } elseif(!preg_match("/^[a-zA-Z\s]+$/", $firstName)){
+  } elseif (!preg_match("/^[a-zA-Z\s]+$/", $firstName)) {
     $error = true;
     $fnameError = "First name must contain only letters and spaces";
   }
 
   #last name validation
-  if(empty($lastName)){
+  if (empty($lastName)) {
     $error = true;
     $lnameError = 'You can leave the last name empty';
-  } elseif(strlen($lastName) < 3){
+  } elseif (strlen($lastName) < 3) {
     $error = true;
     $lnameError = "Last name must be at least 3 chars";
-  } elseif(!preg_match("/^[a-zA-Z\s]+$/", $lastName)){
+  } elseif (!preg_match("/^[a-zA-Z\s]+$/", $lastName)) {
     $error = true;
     $lnameError = "Last name must contain only letters and spaces";
   }
@@ -63,8 +63,8 @@ if(isset($_POST['register'])){
     }
   }
 
-   //Password validation
-   if (empty($password)) {
+  //Password validation
+  if (empty($password)) {
     $error = true;
     $passError = "Please enter a password";
   } elseif (!preg_match("/.{6,}/", $password)) {
@@ -73,7 +73,7 @@ if(isset($_POST['register'])){
   }
 
   #date fo birth validation
-  if(empty($dateOfBirth)){
+  if (empty($dateOfBirth)) {
     $error = true;
     $dateError = "Please select the date of birth";
   }
@@ -118,34 +118,23 @@ if(isset($_POST['register'])){
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50">
-        <a class="navbar-brand" href="index.php">Home</a>
+  <?php include "components/navbar.php" ?>
 
-      </a>
-      <a class="btn btn-success" href="login.php">Create an Event</a>
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
-
-    </div>
-  </nav>
 
   <form class="container" method="post" enctype="multipart/form-data" style="padding: 30px">
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" class="form-control" name="firstName" value="<?= $firstName?>">
+      <input type="text" class="form-control" name="firstName" value="<?= $firstName ?>">
       <small class="form-text text-danger"><?= $fnameError ?></small>
     </div>
     <div class="form-group">
       <label for="lastName">Last name</label>
-      <input type="text" class="form-control" name="lastName" value="<?= $lastName?>">
+      <input type="text" class="form-control" name="lastName" value="<?= $lastName ?>">
       <small class="form-text text-danger"><?= $lnameError ?></small>
     </div>
     <div class="form-group">
       <label for="email">Email address</label>
-      <input type="email" class="form-control" aria-describedby="emailHelp" name="email" value="<?= $email?>">
+      <input type="email" class="form-control" aria-describedby="emailHelp" name="email" value="<?= $email ?>">
       <small class="form-text text-danger"><?= $emailError ?></small>
     </div>
     <div class="form-group">
@@ -155,8 +144,8 @@ if(isset($_POST['register'])){
     </div>
     <div class="form-group">
       <label for="dateOfBirth">Date of birth</label>
-      <input type="date" class="form-control" name="dateOfBirth" value="<?= $dateOfBirth?>">
-      <small class="form-text text-danger"><?= $dateError?></small>
+      <input type="date" class="form-control" name="dateOfBirth" value="<?= $dateOfBirth ?>">
+      <small class="form-text text-danger"><?= $dateError ?></small>
     </div>
     <div style="padding-top: 18px">
       <button type="submit" name="register" class="btn btn-primary">Submit</button>

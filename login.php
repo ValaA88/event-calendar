@@ -90,18 +90,8 @@ if($error){
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50">
-      </a>
-      <a class="navbar-brand" href="index.php">Home</a>
+  <?php include "components/navbar.php" ?>
 
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
-
-    </div>
-  </nav>
 
   <h1><?= $loginError ?></h1>
   <form class="container" method="post">

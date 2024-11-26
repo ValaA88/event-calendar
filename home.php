@@ -4,11 +4,11 @@ require_once('./db_connect_mamp.php');
 
 session_start();
 
-if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])){
+if (!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
   header("location: login.php");
 }
 
-if(isset($_SESSION['admin'])){
+if (isset($_SESSION['admin'])) {
   header("location: dashboard.php");
 }
 
@@ -44,36 +44,35 @@ $result = mysqli_query($conn, $sql);
 
 
 if (mysqli_num_rows($result) == 0) {
-    $layout = "<h5>No Event has been created yet</h5>";
+  $layout = "<h5>No Event has been created yet</h5>";
 } else {
-    $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+  $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    $events = [];
-    foreach ($rows as $row) {
-        $eventId = $row['event_id'];
-        if (!isset($events[$eventId])) {
-            $events[$eventId] = [
-                'details' => [
-                    'sport' => $row['sport'],
-                    'seasonGame' => $row['seasonGame'],
-                    'status' => $row['status'],
-                    'timeVenueUTC' => $row['timeVenueUTC'],
-                    'dateVenue' => $row['dateVenue'],
-                    'stageName' => $row['stageName']
-                ],
-                'teams' => [],
-                'result' => []
-            ];
-        }
-        if (!empty($row['team_name']) || !empty($row['team_result'])) {
-            $events[$eventId]['teams'][] = $row['team_name'];
-            $events[$eventId]['result'][] = $row['team_result'];
-
-        }
+  $events = [];
+  foreach ($rows as $row) {
+    $eventId = $row['event_id'];
+    if (!isset($events[$eventId])) {
+      $events[$eventId] = [
+        'details' => [
+          'sport' => $row['sport'],
+          'seasonGame' => $row['seasonGame'],
+          'status' => $row['status'],
+          'timeVenueUTC' => $row['timeVenueUTC'],
+          'dateVenue' => $row['dateVenue'],
+          'stageName' => $row['stageName']
+        ],
+        'teams' => [],
+        'result' => []
+      ];
     }
+    if (!empty($row['team_name']) || !empty($row['team_result'])) {
+      $events[$eventId]['teams'][] = $row['team_name'];
+      $events[$eventId]['result'][] = $row['team_result'];
+    }
+  }
 
-    foreach ($events as $eventId => $eventData) {
-        $layout .= "
+  foreach ($events as $eventId => $eventData) {
+    $layout .= "
         <div style='padding: 30px; '>
         <div class='card' style='width: 18rem ; background-color: #white ;color:black' >
         <div class='card-body'>
@@ -84,10 +83,10 @@ if (mysqli_num_rows($result) == 0) {
             <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
             <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
 
-            $count = 1;
-            foreach ($eventData['teams'] as $index => $team) {
-                $teamResult = $eventData['result'][$index] ?? '-';
-                $layout .= "
+    $count = 1;
+    foreach ($eventData['teams'] as $index => $team) {
+      $teamResult = $eventData['result'][$index] ?? '-';
+      $layout .= "
                 <table class='table'>
                 <thead>
                   <tr>
@@ -104,15 +103,15 @@ if (mysqli_num_rows($result) == 0) {
                     </tr>
                   </tbody>
               </table>";
-                $count++;
-            }
+      $count++;
+    }
 
 
-        $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+    $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
         </div>
         </div>
         </div>";
-    }
+  }
 }
 
 ?>
@@ -130,20 +129,8 @@ if (mysqli_num_rows($result) == 0) {
 </head>
 
 <body style="background-color: #cadedf">
-  <nav class="navbar bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="images/logo.jpg" alt="..." width="50" height="50"> Hello <?= $countUser["firstName"] ?></a>
-      <a class="navbar-brand" href="index.php">Home</a>
+  <?php include "components/navbar.php" ?>
 
-      </a>
-      <a class="navbar-brand" href="logout.php?logout">Logout</a>
-      <a class="btn btn-success" href="create.php">Create an Event</a>
-      <a class="navbar-brand" href="#">About us</a>
-      <a class="navbar-brand" href="#">FAQ</a>
-
-    </div>
-  </nav>
 
   <form enctype="multipart/form-data">
 
