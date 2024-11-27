@@ -30,7 +30,9 @@ SELECT
     events.dateVenue,
     stage.stageName,
     team.name AS team_name,
-    event_result.teamResult AS team_result
+    event_result.team1Result AS team1_result,
+    event_result.team2Result AS team2_result
+
 FROM events
 LEFT JOIN team_event_result ON team_event_result.fk_event_id = events.id
 LEFT JOIN stage ON stage.id = team_event_result.fk_stage_id
@@ -67,11 +69,13 @@ if (mysqli_num_rows($result) == 0) {
     }
     if (!empty($row['team_name']) || !empty($row['team_result'])) {
       $events[$eventId]['teams'][] = $row['team_name'];
-      $events[$eventId]['result'][] = $row['team_result'];
+      $events[$eventId]['result'][] = $row['team1_result'];
+      $events[$eventId]['result'][] = $row['team2_result'];
     }
   }
 
   foreach ($events as $eventId => $eventData) {
+    $formattedDate = date('l d.m.Y', strtotime($eventData['details']['dateVenue']));
     $layout .= "
         <div style='padding: 30px; '>
         <div class='card' style='width: 18rem ; background-color: #white ;color:black' >
@@ -80,7 +84,7 @@ if (mysqli_num_rows($result) == 0) {
             <h6 class='card-subtitle'>{$eventData['details']['seasonGame']}</h6>
             <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
             <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
-            <h9 class='card-title'>Date: {$eventData['details']['dateVenue']}</h9><br>
+            <h9 class='card-title'>Date: {$formattedDate}</h9><br>
             <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
 
     $count = 1;
@@ -107,7 +111,7 @@ if (mysqli_num_rows($result) == 0) {
     }
 
 
-    $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+    $layout .= "<a href='details.php?id={$eventId}' class='btn btn-outline-primary'>Details</a>
         </div>
         </div>
         </div>";

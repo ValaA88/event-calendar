@@ -111,7 +111,7 @@ if (mysqli_num_rows($result) == 0) {
     $layout .=  $rows;
     $layout .= "</tbody>
                   </table>";
-    $layout .= "<a href='details.php?id={$eventId}' class='btn btn-primary'>Details</a>
+    $layout .= "<a href='details.php?id={$eventId}' class='btn btn-outline-primary'>Details</a>
             </div>
           </div>
         </div>";
@@ -127,7 +127,7 @@ if (mysqli_num_rows($result) == 0) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Sport Events</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">

@@ -38,6 +38,7 @@ if (mysqli_num_rows($result) == 0) {
       $layout .= "<a href='unblocked_users.php?id={$value['id']}' class='btn btn-success'>Active</a>";
     }
     $layout .= "
+
       </label>
       </div>
       </div>
@@ -65,10 +66,13 @@ if (mysqli_num_rows($result) == 0) {
       <div class="container">
         <div class="row row-cols-3." style="padding: 20px">
           <?= $layout ?>
+
+        </div>
+        <div>
+          <a href='dashboard.php' value='back' class='btn btn-danger'>Back</a>
         </div>
       </div>
 
-      <a href="dashboard.php" value="back" class="btn btn-danger">Back</a>
 
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

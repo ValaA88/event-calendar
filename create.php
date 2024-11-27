@@ -51,7 +51,8 @@ if (isset($_POST['create'])) {
 
   if (isset($_SESSION['admin']) || isset($_SESSION['user'])) {
     // insert for event table
-    $fk_users_id = $_SESSION['user'];
+    $fk_users_id = isset($_SESSION['user']) ? $_SESSION['user'] : $_SESSION['admin'];
+
     $sqlEvent = "INSERT INTO `events`(`sport`, `seasonGame`, `status`, `timeVenueUTC`, `dateVenue`, `stadium`, `groupSeason`, `originCompetitionName`, `fk_users_id`) VALUES ('{$sport}','{$seasonGame}','{$status}','{$timeVenueUTC}','{$dateVenue}','{$stadium}','{$groupSeason}','{$originCompetitionName}','{$fk_users_id}')";
     $resultEvent = mysqli_query($conn, $sqlEvent);
     $fkEventId = $conn->insert_id;
@@ -145,7 +146,14 @@ if (isset($_POST['create'])) {
       <div class="mb-3">
         <label for="status" class="form-label">Status</label>
         <select class="form-select" id="status" name="status" required>
-          <option value="scheduled">Scheduled</option>
+          <?php
+          if (isset($_SESSION['admin'])) {
+            echo  "<option value='scheduled'>Scheduled</option>
+          <option value='scheduled'>Played</option>";
+          } else {
+            echo "<option value='scheduled'>Scheduled</option>";
+          }
+          ?>
 
         </select>
       </div>
