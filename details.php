@@ -128,9 +128,9 @@ if (mysqli_num_rows($result) == 0) {
         <table class='table'>
           <thead>
             <tr class='table-secondary'>
-              <th scope='col'>#</th>
+              <th scope='col'></th>
               <th scope='col'>Team</th>
-              <th scope='col'>Country</th>
+              <th scope='col'>C.Code</th>
               <th scope='col'>Result</th>
             </tr>
           </thead>

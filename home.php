@@ -85,35 +85,36 @@ if (mysqli_num_rows($result) == 0) {
             <h7 class='card-title'>Status: {$eventData['details']['status']}</h7><br>
             <h8 class='card-title'>Time: {$eventData['details']['timeVenueUTC']} UTC</h8><br>
             <h9 class='card-title'>Date: {$formattedDate}</h9><br>
-            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>";
-
+            <h9 class='card-title'>Stage: {$eventData['details']['stageName']}</h9><br>
+            <table class='table'>
+          <thead>
+              <tr>
+              <th scope='col'></th>
+              <th scope='col'>Team</th>
+              <th scope='col'>Result</th>
+            </tr>
+          </thead>
+            <tbody>";
+    $rows = "";
     $count = 1;
     foreach ($eventData['teams'] as $index => $team) {
       $teamResult = $eventData['result'][$index] ?? '-';
-      $layout .= "
-                <table class='table'>
-                <thead>
-                  <tr>
-                    <th scope='col'></th>
-                    <th scope='col'>Team</th>
-                    <th scope='col'>Result</th>
-                  </tr>
-                </thead>
-                  <tbody>
-                    <tr>
-                      <th scope='row'></th>
-                      <td>{$count}: {$team}</td>
-                      <td>{$teamResult}</td>
-                    </tr>
-                  </tbody>
-              </table>";
+      $rows .= "
+        <tr>
+        <th scope='row'>
+          <td>{$count}: {$team}</td>
+          <td>{$teamResult}</td></th>
+          </tr>";
       $count++;
     }
 
 
+    $layout .=  $rows;
+    $layout .= "</tbody>
+                  </table>";
     $layout .= "<a href='details.php?id={$eventId}' class='btn btn-outline-primary'>Details</a>
-        </div>
-        </div>
+            </div>
+          </div>
         </div>";
   }
 }
