@@ -38,5 +38,5 @@ $sqlDelete = "DELETE FROM events WHERE id = {$id}";
 $resultDelete = mysqli_query($conn, $sqlDelete);
 
 if ($resultDelete) {
-  header("location: dashboard.php"); //take care of teh location later, maybe index is needed!
+  header("location: dashboard.php"); //take care of the location later, maybe index is needed!
 }

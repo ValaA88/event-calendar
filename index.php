@@ -28,6 +28,7 @@ LEFT JOIN team ON team.id = team_event_result.fk_team_id
 LEFT JOIN event_result ON event_result.id = team_event_result.fk_event_result_id
 ";
 
+// filter
 $filterInput = [];
 if (!empty($sportFilter)) {
   $filterInput[] = "events.sport = '$sportFilter'";

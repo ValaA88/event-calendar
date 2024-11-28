@@ -103,8 +103,6 @@ if (mysqli_num_rows($result) == 0) {
       $events[$eventId]['teams']["name"][] = $row['name'];
       $events[$eventId]['result']['team1Result'][] = $row['team1Result'];
       $events[$eventId]['result']['team2Result'][] = $row['team2Result'];
-
-      # $events[$eventId]['result'][] = $row['teamResult'];
       $events[$eventId]['teams']['teamCountryCode'][] = $row['teamCountryCode'];
     }
     $count++;

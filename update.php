@@ -102,20 +102,17 @@ if (isset($_POST['update'])) {
   // insert for event table
   $sqlEventUpdate = "UPDATE `events` SET `sport`='{$sport}',`seasonGame`='{$seasonGame}',`status`='{$status}',`timeVenueUTC`='{$timeVenueUTC}',`dateVenue`='{$dateVenue}',`stadium`='{$stadium}',`groupSeason`='{$groupSeason}',`originCompetitionName`='{$originCompetitionName}' WHERE id = {$eventId}";
   $resultEventUpdate = mysqli_query($conn, $sqlEventUpdate);
-  //  $fkEventId = $conn->insert_id;
 
 
   // insert for stage table
   $sqlStageUpdate = "UPDATE `stage` SET `stageName`='{$stageName}',`ordering`='{$ordering}' WHERE id = {$eventData['details']['id']}";
   $resultStageUpdate = mysqli_query($conn, $sqlStageUpdate);
-  //  $fkStageId = $conn->insert_id;
 
 
   // insert for event_result table(in update only inside loop)
   $sqlEventResultUpdate = "UPDATE `event_result` SET `team1Result` = '$team1Result',`team2Result` = '$team2Result',`winner`='{$winner}',`goals`='{$goals}',`yellowCards`='{$yellowCards}',`redCards`='{$redCards}' WHERE id = {$eventData['details']['fk_event_result_id']}";
 
   $resultEventResultUpdate = mysqli_query($conn, $sqlEventResultUpdate);
-  //  $fkEventResultId = $conn->insert_id;
 
   foreach ($eventData['teams'] as $index => $team) {
     $teamName = cleanInputs($_POST["team" . ($index + 1) . "_name"]);
@@ -130,12 +127,6 @@ if (isset($_POST['update'])) {
   WHERE id = {$team['id']}
   ";
     $resultTeamUpdate = mysqli_query($conn, $sqlTeamUpdate);
-
-    //   $sqlTeamResultUpdate = "UPDATE event_result
-    // SET `team1Result` = '$team1Result',`team2Result` = '$team2Result'
-    // WHERE id = {$team['event_result_id']}
-    // ";
-    //   $resultTeamResultUpdate = mysqli_query($conn, $sqlTeamResultUpdate);
   }
 
   if ($resultEventUpdate) {
@@ -233,34 +224,34 @@ if (isset($_POST['update'])) {
       <?php endforeach; ?>
 
       <div class="mb-3">
-        <label for="team1Result" class="form-label">Team 1 Result</label>
+        <label for="team1Result" class="form-label">Team 1 Result*</label>
         <input type="text" class="form-control" id="team1Result" name="team1Result"
           value="<?= $eventData['event_result']['team1Result'] ?>" required>
       </div>
       <div class="mb-3">
-        <label for="team2Result" class="form-label">Team 2 Result</label>
+        <label for="team2Result" class="form-label">Team 2 Result*</label>
         <input type="text" class="form-control" id="team2Result" name="team2Result"
           value="<?= $eventData['event_result']['team2Result'] ?>" required>
       </div>
 
       <h3>Result</h3>
       <div class="mb-3">
-        <label for="winner" class="form-label">Winner</label>
+        <label for="winner" class="form-label">Winner*</label>
         <input type="text" class="form-control" id="winner" name="winner"
           value="<?= $eventData['event_result']['winner'] ?>" required>
       </div>
       <div class="mb-3">
-        <label for="goals" class="form-label">Total Goals</label>
+        <label for="goals" class="form-label">Total Goals*</label>
         <input type="number" class="form-control" id="goals" name="goals"
           value="<?= $eventData['event_result']['goals'] ?>" required>
       </div>
       <div class="mb-3">
-        <label for="yellowCards" class="form-label">Total Yellow Cards</label>
+        <label for="yellowCards" class="form-label">Total Yellow Cards*</label>
         <input type="number" class="form-control" id="yellowCards" name="yellowCards"
           value="<?= $eventData['event_result']['yellowCards'] ?>" required>
       </div>
       <div class="mb-3">
-        <label for="redCards" class="form-label">Total Red Cards</label>
+        <label for="redCards" class="form-label">Total Red Cards*</label>
         <input type="number" class="form-control" id="redCards" name="redCards"
           value="<?= $eventData['event_result']['redCards'] ?>" required>
       </div>

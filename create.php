@@ -31,17 +31,10 @@ if (isset($_POST['create'])) {
   $groupSeason = cleanInputs($_POST['groupSeason']);
   $originCompetitionName = cleanInputs($_POST['originCompetitionName']);
 
-
-
   $team1 = cleanInputs($_POST['team1']);
   $team2 = cleanInputs($_POST['team2']);
   $team1CountryCode = $_POST['team1CountryCode'];
   $team2CountryCode = $_POST['team2CountryCode'];
-  // ## we take that out
-  //   $winner = ($_POST['winner']) ?? null;
-  //   $goals = ($_POST['goals']) ?? null;
-  //   $yellowCards = ($_POST['yellowCards']) ?? null;
-  //   $redCards = ($_POST['redCards']) ?? null;
 
   $stageName = cleanInputs($_POST['stageName']);
   $stagePosition = cleanInputs($_POST['stagePosition']);
@@ -63,7 +56,6 @@ if (isset($_POST['create'])) {
   }
 
 
-
   // insert for stage table
   $sqlStage = "INSERT INTO `stage`(`stageName`,`ordering`) VALUES ('{$stageName}','{$ordering}')";
   $resultStage = mysqli_query($conn, $sqlStage);
@@ -76,7 +68,7 @@ if (isset($_POST['create'])) {
   $fkEventResultId = $conn->insert_id;
 
 
-  // teams and results
+  // teams and Country Code
   $teams = [
     ['name' => $team1, 'teamCountryCode' => $team1CountryCode],
     ['name' => $team2, 'teamCountryCode' => $team2CountryCode]
@@ -84,13 +76,11 @@ if (isset($_POST['create'])) {
   ];
 
 
-
   foreach ($teams as $team) {
     // insert for team table
     $sqlTeam = "INSERT INTO `team`(`name`,`teamCountryCode`,`stagePosition`) VALUES ('{$team['name']}','{$team['teamCountryCode']}','{$stagePosition}')";
     $resultTeam = mysqli_query($conn, $sqlTeam);
     $fkTeamId = $conn->insert_id;
-
 
     //insert for team_event_result table
     $sqlTeamEventResult = "INSERT INTO `team_event_result`(`fk_team_id`, `fk_event_id`, `fk_event_result_id`, `fk_stage_id`) VALUES ('{$fkTeamId}','{$fkEventId}','{$fkEventResultId}','{$fkStageId}')";
